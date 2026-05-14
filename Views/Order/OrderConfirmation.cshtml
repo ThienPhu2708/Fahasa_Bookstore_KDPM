@@ -1,0 +1,91 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.HoaDon
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+}
+
+<div class="success-page-wrapper">
+    <div class="success-card">
+        <div class="success-header">
+            <div class="check-icon-circle">
+                <span class="check-icon">✔</span>
+            </div>
+            <h1 class="success-title">Đặt hàng thành công!</h1>
+            <p class="success-subtitle">Cảm ơn bạn đã mua sắm tại Fahasa. Đơn hàng của bạn đang được xử lý.</p>
+        </div>
+
+        @if (Model != null)
+        {
+            <div class="order-timeline">
+                <div class="step active">
+                    <div class="step-dot"></div>
+                    <div class="step-text">Đã đặt hàng</div>
+                </div>
+                <div class="step">
+                    <div class="step-line"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-text">Đang xử lý</div>
+                </div>
+                <div class="step">
+                    <div class="step-line"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-text">Đang giao</div>
+                </div>
+                <div class="step">
+                    <div class="step-line"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-text">Hoàn tất</div>
+                </div>
+            </div>
+
+            <div class="order-details-box">
+                <div class="detail-row header-row">
+                    <span>Mã đơn hàng</span>
+                    <span class="order-id">#@Model.Id</span>
+                </div>
+                <div class="divider"></div>
+
+                <div class="detail-row">
+                    <span class="label">Ngày đặt hàng</span>
+                    <span class="value">@Model.NgayDatHang.ToString("dd/MM/yyyy - HH:mm")</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Người nhận</span>
+                    <span class="value">@Model.HoTenNguoiNhan</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Số điện thoại</span>
+                    <span class="value">@Model.SoDienThoai</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Địa chỉ</span>
+                    <span class="value address">@Model.DiaChiGiaoHang</span>
+                </div>
+
+                <div class="product-summary-list">
+                    @foreach (var item in Model.ChiTietHoaDons)
+                    {
+                        <div class="mini-product-item">
+                            <span class="p-name">@item.SanPham?.TenSanPham</span>
+                            <span class="p-qty">x @item.SoLuong</span>
+                        </div>
+                    }
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="detail-row total-row">
+                    <span>Tổng thanh toán</span>
+                    <span class="total-price">@Model.TongTien.ToString("N0") ₫</span>
+                </div>
+                <div class="payment-method-note">
+                    (Thanh toán khi nhận hàng - COD)
+                </div>
+            </div>
+        }
+
+        <div class="success-actions">
+            <a asp-controller="Account" asp-action="OrderHistory" class="btn-view-order">Xem đơn hàng của tôi</a>
+            <a asp-controller="Home" asp-action="Index" class="btn-continue-shopping">Tiếp tục mua sắm</a>
+        </div>
+    </div>
+</div>

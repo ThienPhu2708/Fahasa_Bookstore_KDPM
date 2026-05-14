@@ -1,0 +1,246 @@
+﻿/* ---- SUCCESS PAGE WRAPPER ---- */
+.success-page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 40px 20px;
+    background-color: #f8f9fa; /* Nền xám nhẹ */
+}
+
+/* ---- MAIN CARD ---- */
+.success-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+/* ---- HEADER & ICON ---- */
+.check-icon-circle {
+    width: 80px;
+    height: 80px;
+    background-color: #e6fffa; /* Xanh ngọc rất nhạt */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 15px rgba(56, 178, 172, 0.2);
+}
+
+.check-icon {
+    font-size: 40px;
+    color: #38b2ac; /* Xanh ngọc đậm */
+}
+
+.success-title {
+    color: #2c7a7b; /* Màu xanh đậm chữ */
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.success-subtitle {
+    color: #718096;
+    margin-bottom: 30px;
+    font-size: 15px;
+}
+
+/* ---- TIMELINE ---- */
+.order-timeline {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 0 20px;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 1;
+}
+
+.step-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #cbd5e0;
+    border-radius: 50%;
+    margin-bottom: 5px;
+    z-index: 2;
+}
+
+.step-line {
+    position: absolute;
+    top: 5px; /* Giữa dot */
+    right: 50%;
+    width: 100%;
+    height: 2px;
+    background-color: #cbd5e0;
+    z-index: 1;
+}
+
+.step-text {
+    font-size: 11px;
+    color: #a0aec0;
+    font-weight: 600;
+}
+
+/* Active Step */
+.step.active .step-dot {
+    background-color: #38b2ac;
+    box-shadow: 0 0 0 3px #b2f5ea;
+}
+
+.step.active .step-text {
+    color: #2c7a7b;
+}
+
+/* ---- DETAILS BOX ---- */
+.order-details-box {
+    background-color: #fafafa;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    border: 1px solid #f0f0f0;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #4a5568;
+}
+
+    .detail-row.header-row {
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+.order-id {
+    font-weight: 800;
+    color: #2d3748;
+    background: #edf2f7;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.label {
+    color: #718096;
+    font-weight: 500;
+}
+
+.value {
+    color: #2d3748;
+    font-weight: 600;
+    text-align: right;
+    max-width: 60%;
+}
+
+    .value.address {
+        line-height: 1.4;
+    }
+
+.divider {
+    border-top: 1px dashed #cbd5e0;
+    margin: 15px 0;
+}
+
+.product-summary-list {
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    margin: 10px 0;
+}
+
+.mini-product-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: #555;
+}
+
+    .mini-product-item:last-child {
+        margin-bottom: 0;
+    }
+
+.p-qty {
+    font-weight: bold;
+    color: #333;
+}
+
+.total-row {
+    margin-top: 5px;
+    margin-bottom: 0;
+    align-items: center;
+}
+
+    .total-row span:first-child {
+        font-size: 16px;
+        font-weight: 700;
+        color: #2d3748;
+    }
+
+.total-price {
+    font-size: 20px;
+    font-weight: 800;
+    color: #C92127; /* Đỏ Fahasa */
+}
+
+.payment-method-note {
+    text-align: right;
+    font-size: 12px;
+    color: #718096;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+/* ---- BUTTONS ---- */
+.success-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.btn-view-order, .btn-continue-shopping {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn-view-order {
+    background-color: #edf2f7;
+    color: #4a5568;
+}
+
+    .btn-view-order:hover {
+        background-color: #e2e8f0;
+        color: #2d3748;
+    }
+
+.btn-continue-shopping {
+    background-color: #C92127;
+    color: white;
+    box-shadow: 0 4px 6px rgba(201, 33, 39, 0.2);
+}
+
+    .btn-continue-shopping:hover {
+        background-color: #a81a20;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(201, 33, 39, 0.3);
+    }

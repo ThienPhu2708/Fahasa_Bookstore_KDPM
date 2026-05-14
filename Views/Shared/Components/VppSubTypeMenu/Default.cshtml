@@ -1,0 +1,21 @@
+﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.LoaiVppham>
+
+<div class="sub-menu">
+    <a class="sub-menu__item"
+       asp-controller="Product"
+       asp-action="Index"
+       asp-route-categoryId="1"
+       asp-route-subCategoryId="">Tất cả VPP</a>
+
+    @foreach (var loaiVPP in Model)
+    {
+        <a class="sub-menu__item"
+           asp-controller="Product"
+           asp-action="Index"
+           asp-route-categoryId="1"
+           asp-route-subCategoryId="@loaiVPP.Id">
+
+            @loaiVPP.TenLoaiVpp
+        </a>
+    }
+</div>

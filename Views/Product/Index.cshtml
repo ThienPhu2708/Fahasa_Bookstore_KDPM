@@ -1,0 +1,138 @@
+﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham>
+@{
+    ViewData["Title"] = "Danh sách Sản phẩm";
+    int? categoryId = ViewBag.CurrentCategoryId;
+}
+
+<div class="page-header">
+    <h1 class="page-title"></h1>
+    <div class="title-underline"></div>
+</div>
+
+<div class="menu-container">
+    @await Component.InvokeAsync("TypeMenu")
+
+    @if (categoryId.HasValue)
+    {
+        if (categoryId == 1)
+        {
+            @await Component.InvokeAsync("VppSubTypeMenu")
+        }
+        else if (categoryId == 2)
+        {
+            @await Component.InvokeAsync("SachSubTypeMenu")
+        }
+    }
+</div>
+
+<div class="filter-controls-row container-fluid">
+    <form method="get" asp-action="Index" class="filter-form">
+        <input type="hidden" name="categoryId" value="@ViewBag.CurrentCategoryId" />
+        <input type="hidden" name="subCategoryId" value="@ViewBag.CurrentSubCategoryId" />
+        <input type="hidden" name="query" value="@ViewBag.CurrentQuery" />
+
+        <div class="filter-group price-filter">
+            <label class="filter-label">Lọc theo giá:</label>
+            <input type="number" name="minPrice" placeholder="Tối thiểu (₫)"
+                   value="@ViewBag.CurrentMinPrice" class="form-control" />
+            <span>—</span>
+            <input type="number" name="maxPrice" placeholder="Tối đa (₫)"
+                   value="@ViewBag.CurrentMaxPrice" class="form-control" />
+        </div>
+
+        <div class="filter-group sort-filter">
+            <label class="filter-label">Sắp xếp:</label>
+            <select name="sortBy" class="form-control">
+                <option value="">Mặc định</option>
+                <option value="rating_desc" selected="@("rating_desc" == ViewBag.CurrentSortBy)">★ Đánh giá (Cao nhất)</option>
+                <option value="price_asc" selected="@("price_asc" == ViewBag.CurrentSortBy)">Giá (Tăng dần)</option>
+                <option value="price_desc" selected="@("price_desc" == ViewBag.CurrentSortBy)">Giá (Giảm dần)</option>
+                <option value="date_desc" selected="@("date_desc" == ViewBag.CurrentSortBy)">Mới nhất</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn-filter-apply">Lọc & Áp dụng</button>
+    </form>
+</div>
+
+<div class="list-product-container">
+    @foreach (var item in Model)
+    {
+        <div class="product-card" data-aos="fade-up">
+            <div class="card-badges">
+                @if (item.HangMoiVe)
+                {
+                    <span class="badge badge-new">✨ Mới về</span>
+                }
+                else if (item.SoLuongDaBan > 500)
+                {
+                    <span class="badge badge-hot">🔥 Bán chạy</span>
+                }
+                else if (item.SoLuongDaBan > 0)
+                {
+                    <span class="badge badge-new">⭐ Yêu thích</span>
+                }
+                @if (item.PhanTramGiam.HasValue && item.PhanTramGiam > 0)
+                {
+                    <span class="badge" style="background:#ff416c;color:#fff;">-@item.PhanTramGiam.Value.ToString("0")%</span>
+                }
+            </div>
+
+            <div class="product-img-wrapper">
+                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
+                    @if (!string.IsNullOrEmpty(item.HinhAnh))
+                    {
+                        <img class="product-img" src="~/images/product-images/@item.HinhAnh" alt="@item.TenSanPham" loading="lazy" />
+                    }
+                    else
+                    {
+                        <img class="product-img" src="~/images/product-images/default_product_img.jpg" alt="No Image" loading="lazy" />
+                    }
+                </a>
+                
+                <button class="quick-add-btn" title="Thêm nhanh vào giỏ">+</button>
+            </div>
+
+            <div class="product-content">
+                <h3 class="product-name">
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">@item.TenSanPham</a>
+                </h3>
+
+                <div class="product-meta">
+                    @if (item.LoaiSanPhamId == 2 && item.ChiTietSach != null)
+                    {
+                        <span class="author">@(item.ChiTietSach.TacGia?.TenTacGia ?? "Không rõ tác giả")</span>
+                    }
+                    else if (item.LoaiSanPhamId == 1 && item.ChiTietVpp != null)
+                    {
+                        <span class="author">@(item.ChiTietVpp.ThuongHieu?.TenThuongHieu ?? "Không rõ thương hiệu")</span>
+                    }
+                </div>
+
+                <div class="product-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-num">(@((item.DanhGia ?? 0).ToString("0.0")))</span>
+                </div>
+
+                <div class="price-row">
+                    @if (item.PhanTramGiam.HasValue && item.PhanTramGiam > 0)
+                    {
+                        var giaGiam = item.GiaBan * (1 - item.PhanTramGiam.Value / 100);
+                        <span class="price" style="color:#ff416c;">@giaGiam.ToString("N0") ₫</span>
+                        <span style="font-size:0.78rem;color:#aaa;text-decoration:line-through;margin-left:4px;">@item.GiaBan.ToString("N0") ₫</span>
+                    }
+                    else
+                    {
+                        <span class="price">@item.GiaBan.ToString("N0") ₫</span>
+                    }
+                </div>
+            </div>
+
+            <div class="product-footer">
+                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="btn-detail">
+                    Xem chi tiết
+                </a>
+            </div>
+        </div>
+    }
+</div>

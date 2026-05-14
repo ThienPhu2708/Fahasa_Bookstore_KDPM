@@ -1,0 +1,17 @@
+﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.LoaiSanPham>
+
+<div class="sub-menu">
+    <a class="sub-menu__item"
+       asp-controller="Product"
+       asp-action="Index">Tất cả Sản phẩm</a>
+
+    @foreach (var loaiSP in Model)
+    {
+        <a class="sub-menu__item"
+           asp-controller="Product"
+           asp-action="Index"
+           asp-route-categoryId="@loaiSP.Id">
+            @loaiSP.TenLoaiSp
+        </a>
+    }
+</div>

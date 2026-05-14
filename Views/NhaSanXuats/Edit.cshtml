@@ -1,0 +1,31 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.NhaSanXuat
+
+@{
+    ViewData["Title"] = "Sửa";
+}
+
+<h1>Sửa Nhà sản xuất</h1>
+<hr />
+<div class="admin-form-container">
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="TenNsx" class="control-label">Tên Nhà sản xuất</label>
+            <input asp-for="TenNsx" />
+            <span asp-validation-for="TenNsx" class="text-danger"></span>
+        </div>
+
+        <div class="admin-actions">
+            <input type="submit" value="Lưu" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại Danh sách</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

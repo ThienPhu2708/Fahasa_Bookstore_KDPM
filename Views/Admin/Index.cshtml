@@ -1,0 +1,129 @@
+﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.HoaDon>
+
+@{
+    ViewData["Title"] = "Đơn hàng chờ duyệt";
+}
+
+<h1>Đơn hàng chờ duyệt</h1>
+
+<div class="card chart-card-container">
+    <div class="card-header">
+        <h6 class="chart-title">Biểu đồ Doanh thu 30 ngày gần nhất</h6>
+    </div>
+    <div class="card-body">
+        <canvas id="revenueChart" style="max-height: 350px;"></canvas>
+    </div>
+</div>
+
+<div style="margin: 15px 0;">
+    <a asp-action="ExportToExcel" class="btn btn-primary" style="background-color: #1D6F42; border-color: #1D6F42; padding: 15px; color: white">
+        Xuất Báo cáo Doanh thu (Excel)
+    </a>
+</div>
+<p>Danh sách các đơn hàng mới cần được xử lý.</p>
+
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>Mã ĐH</th>
+            <th>Người đặt</th>
+            <th>Ngày đặt</th>
+            <th>Tổng tiền</th>
+            <th>Giảm giá</th>
+            <th>Trạng thái</th>
+            <th style="width: 250px;">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="6" style="text-align: center;">Không có đơn hàng nào chờ duyệt.</td>
+            </tr>
+        }
+
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>#@order.Id</td>
+                <td>@(order.Account?.TenNguoiDung ?? "N/A")</td>
+                <td>@order.NgayDatHang.ToString("dd/MM/yyyy HH:mm")</td>
+                <td style="font-weight: bold; color: #C92127;">@order.TongTien.ToString("N0") ₫</td>
+                <td>
+                    @if (order.GiamGia > 0)
+                    {
+                        <span class="text-success font-weight-bold">-@order.GiamGia.ToString("N0") ₫</span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">-</span>
+                    }
+                </td>
+                <td>
+                    <span class="status-badge status-pending">@order.TrangThai</span>
+                </td>
+                <td>
+                    <form asp-controller="Admin" asp-action="UpdateOrderStatus" method="post" style="display: flex; gap: 10px;">
+                        <input type="hidden" name="orderId" value="@order.Id" />
+
+                        <button type="submit" name="newStatus" value="Đang giao" class="btn btn-primary" style="background-color: #28a745;">Duyệt</button>
+
+                        <button type="submit" name="newStatus" value="Đã hủy" class="btn btn-danger">Hủy đơn</button>
+
+                        <a asp-controller="Admin" asp-action="OrderDetails" asp-route-id="@order.Id" class="btn btn-secondary">Chi tiết</a>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/Admin/GetDailyRevenueData')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Dữ liệu nhận được:", data);
+
+                if (!data || data.length === 0) {
+                    return;
+                }
+
+                // --- SỬA Ở ĐÂY ---
+                const dates = data.map(item => item.date);       
+                const revenues = data.map(item => item.revenue); 
+                // ----------------
+
+                const ctx = document.getElementById('revenueChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: dates,
+                        datasets: [{
+                            label: 'Doanh thu (₫)',
+                            data: revenues,
+                            backgroundColor: 'rgba(201, 33, 39, 0.8)',
+                            borderColor: 'rgba(201, 33, 39, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value.toLocaleString('vi-VN') + ' ₫';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Lỗi:', error));
+    });
+</script>

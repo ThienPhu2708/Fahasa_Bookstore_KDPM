@@ -1,0 +1,51 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng ký tài khoản";
+}
+
+<div class="account-container">
+    <h2>Đăng ký tài khoản mới</h2>
+
+    <form asp-action="Register" method="post">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger" style="text-align:center; margin-bottom: 20px;"></div>
+
+        <div class="form-group">
+            <label asp-for="TenNguoiDung">Tên hiển thị</label>
+            <input asp-for="TenNguoiDung" placeholder="Ví dụ: Nguyễn Văn A" />
+            <span asp-validation-for="TenNguoiDung" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Gmail">Email đăng ký</label>
+            <input asp-for="Gmail" type="email" placeholder="Nhập địa chỉ email..." />
+            <span asp-validation-for="Gmail" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password">Mật khẩu</label>
+            <input asp-for="Password" type="password" placeholder="Tạo mật khẩu..." />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ConfirmPassword">Nhập lại mật khẩu</label>
+            <input asp-for="ConfirmPassword" type="password" placeholder="Xác nhận lại mật khẩu..." />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn-submit">Đăng ký</button>
+        </div>
+
+        <div class="form-footer-links">
+            Đã có tài khoản? <a asp-action="Login">Đăng nhập ngay</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,17 @@
+# Build output
+[Oo]bj/
+[Bb]in/
+
+# IDE
+.vs/
+*.user
+*.suo
+
+# Node
+node_modules/
+
+# Local config (mỗi người tự tạo file này với connection string của máy mình)
+appsettings.Development.json
+
+# Publish
+publish/

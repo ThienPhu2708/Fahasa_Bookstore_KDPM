@@ -1,0 +1,26 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.NhaXuatBan
+
+@{
+    ViewData["Title"] = "Xóa";
+}
+
+<h1>Xóa Nhà Xuất Bản</h1>
+<h3>Bạn có chắc muốn xóa nhà xuất bản này?</h3>
+
+<div class="admin-details-container">
+    <dl class="admin-details-dl">
+        <dt>Mã</dt>
+        <dd>@Html.DisplayFor(model => model.MaNxb)</dd>
+
+        <dt>Tên</dt>
+        <dd>@Html.DisplayFor(model => model.TenNxb)</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <div class="admin-actions">
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại Danh sách</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,26 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.TacGium
+
+@{
+    ViewData["Title"] = "Xóa";
+}
+
+<h1>Xóa Tác giả</h1>
+<h3>Bạn có chắc muốn xóa tác giả này?</h3>
+
+<div class="admin-details-container">
+    <dl class="admin-details-dl">
+        <dt>Mã</dt>
+        <dd>@Html.DisplayFor(model => model.MaTacGia)</dd>
+
+        <dt>Tên</dt>
+        <dd>@Html.DisplayFor(model => model.TenTacGia)</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <div class="admin-actions">
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại Danh sách</a>
+        </div>
+    </form>
+</div>

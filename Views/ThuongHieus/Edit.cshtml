@@ -1,0 +1,31 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.ThuongHieu
+
+@{
+    ViewData["Title"] = "Sửa";
+}
+
+<h1>Sửa Thương hiệu</h1>
+<hr />
+<div class="admin-form-container">
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="TenThuongHieu" class="control-label">Tên Thương hiệu</label>
+            <input asp-for="TenThuongHieu" />
+            <span asp-validation-for="TenThuongHieu" class="text-danger"></span>
+        </div>
+
+        <div class="admin-actions">
+            <input type="submit" value="Lưu" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại Danh sách</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

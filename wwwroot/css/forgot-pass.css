@@ -1,0 +1,109 @@
+﻿/* ---- AUTHENTICATION PAGES (LOGIN / FORGOT PASS) ---- */
+
+/* Bao ngoài để căn giữa màn hình */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f8f9fa; 
+    padding: 20px;
+}
+
+/* Thẻ Card chứa form */
+.auth-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); 
+    border: 1px solid #eee;
+}
+
+/* Tiêu đề */
+.auth-title {
+    text-align: center;
+    color: #C92127; 
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+/* Các nhóm input */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+/* Ô nhập liệu */
+.custom-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-sizing: border-box; 
+}
+
+    /* Hiệu ứng khi bấm vào ô nhập */
+    .custom-input:focus {
+        border-color: #C92127;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(201, 33, 39, 0.1);
+    }
+
+    /* Ô nhập chỉ đọc (Email) */
+    .custom-input[readonly] {
+        background-color: #f2f2f2;
+        color: #777;
+        cursor: not-allowed;
+    }
+
+/* Thông báo lỗi validation */
+.text-danger {
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Nút bấm hành động */
+.btn-auth {
+    width: 100%;
+    padding: 14px;
+    background-color: #C92127;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+    .btn-auth:hover {
+        background-color: #a81a20; 
+    }
+
+/* Thông báo thành công */
+.alert-success-custom {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #c3e6cb;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+}

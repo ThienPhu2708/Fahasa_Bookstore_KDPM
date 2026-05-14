@@ -1,0 +1,66 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Models.EditProfileViewModel
+@{
+    ViewData["Title"] = "Cập nhật hồ sơ";
+
+    // Xử lý đường dẫn ảnh
+    var avatarPath = string.IsNullOrEmpty(Model.CurrentAvatar)
+        ? "/images/avatars/default.png"
+        : $"/images/avatars/{Model.CurrentAvatar}";
+}
+
+<div class="account-container edit-profile">
+    <h2>Cập nhật hồ sơ</h2>
+
+    <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="CurrentAvatar" />
+        <input type="hidden" asp-for="Gmail" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger" style="text-align:center; margin-bottom:15px;"></div>
+
+        <div class="form-group" style="text-align: center;">
+            <label style="text-align: left;">Ảnh đại diện</label>
+
+            <div style="margin: 10px 0;">
+                <img src="@avatarPath" alt="Avatar hiện tại"
+                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"
+                     asp-append-version="true" />
+            </div>
+
+            <input asp-for="AvatarFile" type="file" accept="image/*" style="padding: 10px;" />
+            <span asp-validation-for="AvatarFile" class="text-danger" style="text-align: left; display: block;"></span>
+            <small style="display: block; color: #888; margin-top: 5px; font-size: 12px;">(Bỏ trống nếu muốn giữ ảnh cũ)</small>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Gmail">Email đăng ký</label>
+            <input asp-for="Gmail" value="@Model.Gmail" readonly style="background-color: #eee; cursor: not-allowed; color: #666;" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TenNguoiDung">Tên hiển thị</label>
+            <input asp-for="TenNguoiDung" placeholder="Nhập tên hiển thị của bạn..." />
+            <span asp-validation-for="TenNguoiDung" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GioiThieu">Giới thiệu bản thân</label>
+            <textarea asp-for="GioiThieu" rows="4" placeholder="Viết đôi dòng mô tả về bản thân bạn..."></textarea>
+            <span asp-validation-for="GioiThieu" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn-submit">Lưu thay đổi</button>
+        </div>
+
+        <div class="form-footer-links">
+            <a asp-controller="Account" asp-action="Profile">← Quay lại trang cá nhân</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,26 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.TheLoaiSach
+
+@{
+    ViewData["Title"] = "Xóa";
+}
+
+<h1>Xóa Thể loại Sách</h1>
+<h3>Bạn có chắc muốn xóa thể loại này?</h3>
+
+<div class="admin-details-container">
+    <dl class="admin-details-dl">
+        <dt>Mã</dt>
+        <dd>@Html.DisplayFor(model => model.MaTheLoai)</dd>
+
+        <dt>Tên</dt>
+        <dd>@Html.DisplayFor(model => model.TenTheLoai)</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <div class="admin-actions">
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại Danh sách</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,77 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.Account
+@{
+    ViewData["Title"] = "Hồ sơ của tôi";
+    // Xử lý ảnh đại diện
+    var avatarPath = string.IsNullOrEmpty(Model.AvatarNguoiDung)
+        ? "/images/avatars/default.png"
+        : $"/images/avatars/{Model.AvatarNguoiDung}";
+}
+
+<div class="profile-wrapper">
+    <div class="profile-card">
+        <div class="profile-sidebar">
+            <div class="avatar-container">
+                <img src="@avatarPath" alt="Avatar" class="profile-avatar" asp-append-version="true" />
+            </div>
+
+            <h2 class="profile-name">@Model.TenNguoiDung</h2>
+
+            <div class="profile-role">
+                <span class="role-badge">@Model.Role</span>
+            </div>
+
+            <p class="profile-bio">
+                @(string.IsNullOrEmpty(Model.GioiThieu) ? "Chưa cập nhật giới thiệu" : Model.GioiThieu)
+            </p>
+        </div>
+
+        <div class="profile-content">
+            <h3 class="section-title">Thông tin cá nhân</h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>ID Người dùng</label>
+                    <div class="info-value">@Model.IdnguoiDung</div>
+                </div>
+
+                <div class="info-item">
+                    <label>Email đăng ký</label>
+                    <div class="info-value">@Model.Gmail</div>
+                </div>
+
+                <div class="info-item">
+                    <label>Ngày tham gia</label>
+                    <div class="info-value">@Model.NgayTao.ToString("dd/MM/yyyy")</div>
+                </div>
+
+                <div class="info-item">
+                    <label>Trạng thái</label>
+                    <div class="info-value status-active">
+                        <span class="dot">●</span> Đang hoạt động
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <h3 class="section-title">Hành động</h3>
+            <div class="action-buttons">
+                <a asp-controller="Account" asp-action="OrderHistory" class="btn-action btn-primary">
+                    <span class="icon">📦</span> Lịch sử đơn hàng
+                </a>
+                <a asp-action="EditProfile" class="btn-action btn-secondary">
+                    <span class="icon">✏️</span> Sửa thông tin
+                </a>
+                <a asp-controller="Account" asp-action="ChangePassword" class="btn-action btn-secondary">
+                    <span class="icon">🔒</span> Đổi mật khẩu
+                </a>
+                <a asp-controller="Account" asp-action="Logout" class="btn-action btn-danger">
+                    <span class="icon">🚪</span> Đăng xuất
+                </a>
+                <a asp-controller="Wishlist" asp-action="Index" class="btn-action btn-primary">
+                    <span class="icon">🚪</span> Danh sách yêu thích
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

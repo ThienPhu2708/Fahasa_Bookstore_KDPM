@@ -1,0 +1,287 @@
+@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham>
+@{
+    ViewData["Title"] = "Khuyến Mãi";
+}
+
+<style>
+    .promo-hero {
+        background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+        color: #fff;
+        padding: 60px 20px 50px;
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+    .promo-hero::before {
+        content: "";
+        position: absolute;
+        top: -60px; right: -60px;
+        width: 220px; height: 220px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 50%;
+    }
+    .promo-hero::after {
+        content: "";
+        position: absolute;
+        bottom: -80px; left: -40px;
+        width: 280px; height: 280px;
+        background: rgba(255,255,255,0.06);
+        border-radius: 50%;
+    }
+    .promo-hero h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .promo-hero p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+    .promo-hero .badge-fire {
+        font-size: 2.2rem;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    .promo-sort-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto 30px;
+        padding: 0 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .promo-sort-bar .result-count {
+        font-size: 0.95rem;
+        color: #666;
+    }
+    .promo-sort-bar .sort-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .promo-sort-bar select {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 7px 12px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        background: #fff;
+    }
+
+    .promo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px 60px;
+    }
+
+    .promo-card {
+        background: #fff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        transition: transform 0.25s, box-shadow 0.25s;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    .promo-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+    }
+
+    .discount-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: #ff416c;
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 20px;
+        z-index: 2;
+        box-shadow: 0 2px 8px rgba(255,65,108,0.4);
+        letter-spacing: 0.5px;
+    }
+
+    .promo-img-wrapper {
+        width: 100%;
+        padding-top: 100%;
+        position: relative;
+        background: #f7f7f7;
+    }
+    .promo-img-wrapper img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .promo-body {
+        padding: 14px 16px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .promo-name {
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #222;
+        margin-bottom: 6px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.4;
+    }
+    .promo-meta {
+        font-size: 0.8rem;
+        color: #999;
+        margin-bottom: 10px;
+    }
+    .promo-price-block {
+        margin-top: auto;
+    }
+    .price-original {
+        font-size: 0.82rem;
+        color: #aaa;
+        text-decoration: line-through;
+        display: block;
+        margin-bottom: 2px;
+    }
+    .price-discounted {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #ff416c;
+    }
+    .price-save {
+        font-size: 0.78rem;
+        color: #2ecc71;
+        margin-top: 2px;
+    }
+
+    .promo-footer {
+        padding: 0 16px 16px;
+    }
+    .btn-detail-promo {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+        color: #fff;
+        padding: 9px 0;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: opacity 0.2s;
+    }
+    .btn-detail-promo:hover {
+        opacity: 0.88;
+        color: #fff;
+    }
+
+    .empty-promo {
+        text-align: center;
+        padding: 80px 20px;
+        color: #999;
+    }
+    .empty-promo .empty-icon { font-size: 4rem; display: block; margin-bottom: 16px; }
+    .empty-promo h3 { font-size: 1.4rem; color: #555; }
+</style>
+
+<div class="promo-hero">
+    <h1><span class="badge-fire">🔥</span> Khuyến Mãi Đặc Biệt</h1>
+    <p>Hàng nghìn sản phẩm giảm giá cực sốc – Mua ngay kẻo hết!</p>
+</div>
+
+<div class="promo-sort-bar">
+    <span class="result-count">Tìm thấy <strong>@Model.Count()</strong> sản phẩm đang khuyến mãi</span>
+    <div class="sort-group">
+        <label style="font-size:0.9rem; color:#555;">Sắp xếp:</label>
+        <form method="get" asp-action="KhuyenMai">
+            <select name="sortBy" onchange="this.form.submit()">
+                <option value="discount_desc" selected="@("discount_desc" == ViewBag.CurrentSortBy?.ToString() || string.IsNullOrEmpty(ViewBag.CurrentSortBy?.ToString()))">Giảm nhiều nhất</option>
+                <option value="price_asc" selected="@("price_asc" == ViewBag.CurrentSortBy?.ToString())">Giá (Thấp → Cao)</option>
+                <option value="price_desc" selected="@("price_desc" == ViewBag.CurrentSortBy?.ToString())">Giá (Cao → Thấp)</option>
+            </select>
+        </form>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-promo">
+        <span class="empty-icon">🏷️</span>
+        <h3>Chưa có sản phẩm khuyến mãi</h3>
+        <p>Vui lòng quay lại sau, chúng tôi sẽ cập nhật sớm!</p>
+    </div>
+}
+else
+{
+    <div class="promo-grid">
+        @foreach (var item in Model)
+        {
+            var giaGoc = item.GiaBan;
+            var phanTram = item.PhanTramGiam ?? 0;
+            var giaGiam = giaGoc * (1 - phanTram / 100);
+            var tietKiem = giaGoc - giaGiam;
+
+            <div class="promo-card">
+                <span class="discount-badge">-@phanTram.ToString("0")%</span>
+
+                <div class="promo-img-wrapper">
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
+                        @if (!string.IsNullOrEmpty(item.HinhAnh))
+                        {
+                            <img src="~/images/product-images/@item.HinhAnh" alt="@item.TenSanPham" loading="lazy" />
+                        }
+                        else
+                        {
+                            <img src="~/images/product-images/default_product_img.jpg" alt="No Image" loading="lazy" />
+                        }
+                    </a>
+                </div>
+
+                <div class="promo-body">
+                    <div class="promo-name">
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" style="color:inherit;text-decoration:none;">
+                            @item.TenSanPham
+                        </a>
+                    </div>
+                    <div class="promo-meta">
+                        @if (item.LoaiSanPhamId == 2 && item.ChiTietSach != null)
+                        {
+                            @(item.ChiTietSach.TacGia?.TenTacGia ?? "")
+                        }
+                        else if (item.LoaiSanPhamId == 1 && item.ChiTietVpp != null)
+                        {
+                            @(item.ChiTietVpp.ThuongHieu?.TenThuongHieu ?? "")
+                        }
+                    </div>
+                    <div class="promo-price-block">
+                        <span class="price-original">@giaGoc.ToString("N0") ₫</span>
+                        <span class="price-discounted">@giaGiam.ToString("N0") ₫</span>
+                        <div class="price-save">Tiết kiệm: @tietKiem.ToString("N0") ₫</div>
+                    </div>
+                </div>
+
+                <div class="promo-footer">
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="btn-detail-promo">
+                        Xem chi tiết
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}

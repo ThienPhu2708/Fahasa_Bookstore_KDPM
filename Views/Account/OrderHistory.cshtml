@@ -1,0 +1,49 @@
+﻿@model List<CNPM_LIBRARY_MANAGEMENT.Data.Models.HoaDon>
+
+@{
+    ViewData["Title"] = "Lịch sử Đơn hàng";
+}
+
+<div class="order-history-container">
+    <h1 class="order-history-title">Lịch sử Đơn hàng</h1>
+
+    @if (Model == null || !Model.Any())
+    {
+        <p>Bạn chưa có đơn hàng nào.</p>
+        <a asp-controller="Product" asp-action="Index" class="btn-primary" style="text-decoration:none;">Bắt đầu mua sắm</a>
+    }
+    else
+    {
+        @foreach (var order in Model)
+        {
+            <div class="order-card">
+                <div class="order-card-header">
+                    <h5>Đơn hàng #@order.Id</h5>
+                    <span class="status-badge status-completed">@order.TrangThai</span>
+                </div>
+                <div class="order-card-body">
+                    <p><strong>Ngày đặt:</strong> @order.NgayDatHang.ToString("dd/MM/yyyy HH:mm")</p>
+                    <p><strong>Người nhận:</strong> @order.HoTenNguoiNhan</p>
+                    <p><strong>Địa chỉ giao:</strong> @order.DiaChiGiaoHang</p>
+                    <p><strong>Tổng tiền:</strong> <span style="font-weight:bold; color:#C92127;">@order.TongTien.ToString("N0") ₫</span></p>
+
+                    <h6 class="order-details-title">Chi tiết đơn hàng</h6>
+
+                    @foreach (var item in order.ChiTietHoaDons)
+                    {
+                        <div class="order-item">
+                            <img src="@(string.IsNullOrEmpty(item.SanPham?.HinhAnh) ? "/images/product-images/default_product_img.jpg" : $"/images/product-images/{item.SanPham.HinhAnh}")" alt="@item.SanPham?.TenSanPham" />
+                            <div class="order-item-info">
+                                <strong>@item.SanPham?.TenSanPham</strong>
+                            </div>
+                            <div class="order-item-price">
+                                @item.DonGia.ToString("N0") ₫
+                                <small>Số lượng: @item.SoLuong</small>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>

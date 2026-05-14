@@ -1,0 +1,22 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.LoaiVppham
+
+@{
+    ViewData["Title"] = "Chi tiết";
+}
+
+<h1>Chi tiết Loại VPP</h1>
+
+<div class="admin-details-container">
+    <dl class="admin-details-dl">
+        <dt>Mã</dt>
+        <dd>@Html.DisplayFor(model => model.IdloaiVpp)</dd>
+
+        <dt>Tên</dt>
+        <dd>@Html.DisplayFor(model => model.TenLoaiVpp)</dd>
+    </dl>
+
+    <div class="admin-actions">
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Sửa</a>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại Danh sách</a>
+    </div>
+</div>

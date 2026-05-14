@@ -1,0 +1,181 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Models.ProductAdminViewModel
+
+@{
+    ViewData["Title"] = Model.LoaiSanPhamId == 2 ? "Thêm Sách Mới" : "Thêm Văn Phòng Phẩm";
+    var isBook = Model.LoaiSanPhamId == 2;
+}
+
+<div class="admin-page-header">
+    <h1 class="page-title">@ViewData["Title"]</h1>
+    <a asp-action="Index" class="btn-back">
+        ← Quay lại danh sách
+    </a>
+</div>
+
+<div class="admin-form-container">
+    <form asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="alert-danger mb-3"></div>
+        <input type="hidden" asp-for="LoaiSanPhamId" />
+
+        <div class="form-layout-grid">
+
+            <div class="form-section left-section">
+                <h4 class="section-heading">1. Thông tin chung</h4>
+
+                <div class="form-group">
+                    <label asp-for="TenSanPham">Tên sản phẩm</label>
+                    <input asp-for="TenSanPham" class="form-control" placeholder="Nhập tên sản phẩm..." />
+                    <span asp-validation-for="TenSanPham" class="text-danger"></span>
+                </div>
+
+                <div class="form-group-row">
+                    <div class="form-group half">
+                        <label asp-for="GiaBan">Giá bán (VNĐ)</label>
+                        <input asp-for="GiaBan" type="number" class="form-control" />
+                        <span asp-validation-for="GiaBan" class="text-danger"></span>
+                    </div>
+                    <div class="form-group half">
+                        <label asp-for="PhanTramGiam">Giảm giá (%)</label>
+                        <input asp-for="PhanTramGiam" type="number" class="form-control" min="0" max="100" step="1" placeholder="Để trống nếu không giảm" />
+                        <span asp-validation-for="PhanTramGiam" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-check" style="display:flex; align-items:center; gap:10px;">
+                        <input asp-for="HangMoiVe" type="checkbox" class="form-check-input" style="width:18px;height:18px;" />
+                        <label asp-for="HangMoiVe" class="form-check-label" style="margin-bottom:0; font-weight:600;">Đánh dấu là Hàng mới về</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="MoTa">Mô tả sản phẩm</label>
+                    <textarea asp-for="MoTa" rows="5" class="form-control" placeholder="Mô tả chi tiết..."></textarea>
+                    <span asp-validation-for="MoTa" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Ảnh đại diện</label>
+                    <div class="image-upload-wrapper">
+                        <div class="image-preview-box">
+                            <img id="imgPreview" src="https://placehold.co/150x150/png?text=Preview" alt="Preview" />
+                        </div>
+                        <div class="file-input-group">
+                            <label for="ImageFile" class="btn-upload-light">
+                                <svg style="width:16px; margin-right:5px; vertical-align:text-bottom;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                Chọn hình ảnh
+                            </label>
+                            <input asp-for="ImageFile" type="file" accept="image/*" onchange="previewImage(this)" style="display:none;" id="ImageFile" />
+                            <span id="fileName" class="file-name">Chưa chọn tệp nào</span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-section right-section">
+
+                @if (isBook)
+                {
+                    <h4 class="section-heading">2. Chi tiết Sách</h4>
+                    <div class="form-group">
+                        <label asp-for="TacGiaId">Tác giả</label>
+                        <select asp-for="TacGiaId" asp-items="Model.TacGias" class="form-control select-modern">
+                            <option value="">-- Chọn Tác giả --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="TheLoaiId">Thể loại</label>
+                        <select asp-for="TheLoaiId" asp-items="Model.TheLoaiSaches" class="form-control select-modern">
+                            <option value="">-- Chọn Thể loại --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="NhaXuatBanId">Nhà xuất bản</label>
+                        <select asp-for="NhaXuatBanId" asp-items="Model.NhaXuatBans" class="form-control select-modern">
+                            <option value="">-- Chọn NXB --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-row">
+                        <div class="form-group half">
+                            <label asp-for="SoTrang">Số trang</label>
+                            <input asp-for="SoTrang" type="number" class="form-control" />
+                        </div>
+                        <div class="form-group half">
+                            <label asp-for="LoaiBia">Loại bìa</label>
+                            <select asp-for="LoaiBia" class="form-control select-modern">
+                                <option value="Bìa mềm">Bìa mềm</option>
+                                <option value="Bìa cứng">Bìa cứng</option>
+                            </select>
+                        </div>
+                    </div>
+                }
+
+                @if (!isBook)
+                {
+                    <h4 class="section-heading">2. Chi tiết Văn phòng phẩm</h4>
+                    <div class="form-group">
+                        <label asp-for="IdLoaiVpp">Loại VPP</label>
+                        <select asp-for="IdLoaiVpp" asp-items="Model.LoaiVpphams" class="form-control select-modern">
+                            <option value="">-- Chọn Loại --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ThuongHieuId">Thương hiệu</label>
+                        <select asp-for="ThuongHieuId" asp-items="Model.ThuongHieus" class="form-control select-modern">
+                            <option value="">-- Chọn Thương hiệu --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NhaSanXuatId">Nhà sản xuất</label>
+                        <select asp-for="NhaSanXuatId" asp-items="Model.NhaSanXuats" class="form-control select-modern">
+                            <option value="">-- Chọn Nhà sản xuất --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="SelectedMauSacIds">Màu sắc (Giữ Ctrl chọn nhiều)</label>
+                        <select asp-for="SelectedMauSacIds" asp-items="Model.AllMauSacs" class="form-control multi-select-modern" multiple="multiple">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="SelectedChatLieuIds">Chất liệu (Giữ Ctrl chọn nhiều)</label>
+                        <select asp-for="SelectedChatLieuIds" asp-items="Model.AllChatLieus" class="form-control multi-select-modern" multiple="multiple">
+                        </select>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="form-actions-footer">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <svg style="width:20px; vertical-align:middle; margin-right:5px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Xác nhận tạo
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function previewImage(input) {
+            var file = input.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imgPreview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+                document.getElementById('fileName').innerText = file.name;
+            }
+        }
+    </script>
+}

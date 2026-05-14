@@ -1,0 +1,130 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Models.CheckoutViewModel
+@{
+    ViewData["Title"] = "Thanh toán";
+    decimal totalAmount = Model.CartItems.Sum(item => item.ThanhTien);
+}
+
+<div class="checkout-wrapper">
+    <div class="page-header">
+        <h1>Thanh toán & Đặt hàng</h1>
+    </div>
+
+    <form asp-action="Checkout" method="post" class="checkout-layout">
+        @Html.AntiForgeryToken()
+
+        <div class="checkout-left">
+
+            <div class="section-card">
+                <h3 class="section-title">📍 Thông tin giao hàng</h3>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="form-group">
+                    <label asp-for="OrderInfo.HoTenNguoiNhan">Họ và tên người nhận</label>
+                    <input asp-for="OrderInfo.HoTenNguoiNhan" placeholder="Ví dụ: Nguyễn Văn A" />
+                    <span asp-validation-for="OrderInfo.HoTenNguoiNhan" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="OrderInfo.SoDienThoai">Số điện thoại</label>
+                    <input asp-for="OrderInfo.SoDienThoai" placeholder="Ví dụ: 0901234567" />
+                    <span asp-validation-for="OrderInfo.SoDienThoai" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="OrderInfo.DiaChiGiaoHang">Địa chỉ nhận hàng</label>
+                    <input asp-for="OrderInfo.DiaChiGiaoHang" placeholder="Số nhà, đường, phường/xã, quận/huyện..." />
+                    <span asp-validation-for="OrderInfo.DiaChiGiaoHang" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Ghi chú đơn hàng (Tùy chọn)</label>
+                    <textarea name="OrderInfo.Note" rows="2" placeholder="Ví dụ: Giao hàng giờ hành chính..."></textarea>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3 class="section-title">💳 Phương thức thanh toán</h3>
+
+                <div class="payment-methods">
+                    <label class="payment-option">
+                        <input type="radio" name="PaymentMethod" value="COD" checked>
+                        <div class="payment-content">
+                            <span class="payment-icon">💵</span>
+                            <div class="payment-text">
+                                <strong>Thanh toán khi nhận hàng (COD)</strong>
+                                <span>Bạn chỉ phải thanh toán khi nhận được hàng.</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="PaymentMethod" value="Banking">
+                        <div class="payment-content">
+                            <span class="payment-icon">🏦</span>
+                            <div class="payment-text">
+                                <strong>Chuyển khoản ngân hàng (QR Code)</strong>
+                                <span>Quét mã QR để thanh toán nhanh chóng.</span>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout-right">
+            <div class="summary-card sticky-card">
+                <h3 class="summary-title">Đơn hàng (@Model.CartItems.Count sản phẩm)</h3>
+
+                <div class="order-items-list">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        var imgPath = string.IsNullOrEmpty(item.HinhAnh) ? "/images/product-images/default_product_img.jpg" : $"/images/product-images/{item.HinhAnh}";
+
+                        <div class="order-item">
+                            <div class="item-thumb">
+                                <img src="@imgPath" alt="@item.TenSanPham" />
+                                <span class="item-qty">x @item.SoLuong</span>
+                            </div>
+                            <div class="item-details">
+                                <p class="name">@item.TenSanPham</p>
+                                <p class="price">@item.ThanhTien.ToString("N0") ₫</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-row">
+                    <span>Tạm tính</span>
+                    <span>@totalAmount.ToString("N0") ₫</span>
+                </div>
+                <div class="summary-row">
+                    <span>Phí vận chuyển</span>
+                    <span>Miễn phí</span>
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-row total">
+                    <span>Tổng cộng</span>
+                    <span class="final-price">@totalAmount.ToString("N0") ₫</span>
+                </div>
+
+                <button type="submit" class="btn-place-order">
+                    XÁC NHẬN ĐẶT HÀNG
+                </button>
+
+                <a asp-controller="Cart" asp-action="Index" class="back-to-cart">
+                    ← Quay lại giỏ hàng
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

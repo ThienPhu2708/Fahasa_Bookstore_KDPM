@@ -1,0 +1,324 @@
+﻿/* ---- BIẾN MÀU & CẤU HÌNH CHUNG ---- */
+:root {
+    --primary-color: #C92127; /* Đỏ Fahasa */
+    --primary-hover: #a81a20;
+    --text-dark: #333;
+    --text-gray: #777;
+    --bg-white: #fff;
+    --bg-body: #f0f0f0;
+    --radius-card: 8px; /* Bo góc nhẹ lại cho giống web bán sách hiện đại */
+}
+
+/* ---- PAGE HEADER ---- */
+.page-header {
+    text-align: center;
+    margin: 40px 0 30px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.title-underline {
+    width: 80px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 0 auto;
+}
+
+/* ---- MENU PHÂN LOẠI (STYLE MỚI: GẠCH CHÂN HIỆN ĐẠI) ---- */
+.menu-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px; /* Khoảng cách rộng rãi */
+    margin-bottom: 40px;
+    border-bottom: 1px solid #e0e0e0; /* Đường kẻ mờ toàn dải */
+    padding-bottom: 0;
+}
+
+    /* Reset style mặc định của thẻ a/button */
+    .menu-container a,
+    .menu-container button {
+        display: inline-block;
+        padding: 10px 5px;
+        background-color: transparent;
+        color: #555;
+        text-decoration: none;
+        font-weight: 600;
+        border: none;
+        border-bottom: 3px solid transparent; /* Chuẩn bị gạch chân */
+        font-size: 15px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        margin-bottom: -1px; /* Để gạch chân đè lên đường kẻ mờ */
+    }
+
+        /* Hover hoặc Active */
+        .menu-container a:hover,
+        .menu-container button:hover,
+        .menu-container a.active, /* Bạn nhớ thêm class active vào mục đang chọn trong HTML/JS nhé */
+        .menu-container button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            background-color: transparent;
+            box-shadow: none;
+            transform: none;
+        }
+
+/* ---- GRID CONTAINER (CHIA CỘT) ---- */
+.list-product-container {
+    display: grid;
+    /* Chia cột thông minh: nhỏ nhất 220px, còn lại tự giãn */
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px; /* Khoảng cách giữa các ô */
+    max-width: 1320px; /* Giới hạn chiều rộng chuẩn HD */
+    margin: 0 auto;
+    padding: 0 15px 50px;
+}
+
+/* ---- PRODUCT CARD (THẺ SẢN PHẨM) ---- */
+.product-card {
+    background-color: var(--bg-white);
+    border-radius: var(--radius-card);
+    transition: all 0.3s ease;
+    /* FLEXBOX ĐỂ CĂN DÒNG NÚT BẤM */
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Bắt buộc để các thẻ cao bằng nhau */
+
+    position: relative;
+    border: 1px solid #eee; /* Viền mờ mặc định */
+    overflow: hidden;
+}
+
+    /* Hover vào thẻ */
+    .product-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border-color: #fcebeb; /* Viền hồng nhạt khi hover */
+    }
+
+/* ---- ẢNH SẢN PHẨM ---- */
+.product-img-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Luôn vuông */
+    overflow: hidden;
+    position: relative;
+    padding: 15px; /* Khoảng hở để ảnh không sát lề */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-img {
+    transform: scale(1.05); /* Zoom nhẹ 5% */
+}
+
+/* ---- BADGES (NHÃN) ---- */
+.card-badges {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.badge {
+    padding: 3px 8px;
+    border-radius: 4px; /* Bo góc vuông vức hơn chút */
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge-hot {
+    background-color: #F7941E;
+}
+/* Cam đậm */
+.badge-new {
+    background-color: #2F80ED;
+}
+/* Xanh dương */
+
+/* ---- NỘI DUNG (TÊN, GIÁ...) ---- */
+.product-content {
+    padding: 10px 15px;
+    flex-grow: 1; /* QUAN TRỌNG: Phần này tự giãn để đẩy footer xuống đáy */
+    display: flex;
+    flex-direction: column;
+}
+
+.product-name {
+    margin: 0 0 5px;
+    font-size: 14px;
+    line-height: 1.4;
+    height: 40px; /* Chiều cao cố định cho 2 dòng chữ */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+    .product-name a {
+        text-decoration: none;
+        color: var(--text-dark);
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+
+        .product-name a:hover {
+            color: var(--primary-color);
+        }
+
+/* Tác giả/Meta */
+.product-meta {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Đánh giá sao */
+.product-rating {
+    font-size: 11px;
+    margin-bottom: 10px;
+    color: #ffc107;
+}
+
+/* Giá bán */
+.price-row {
+    margin-top: auto; /* Dữ phòng: Đẩy giá xuống đáy vùng content */
+}
+
+.price {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* ---- FOOTER (CHỨA NÚT XEM CHI TIẾT) ---- */
+.product-footer {
+    padding: 0 15px 15px;
+    margin-top: auto; /* QUAN TRỌNG NHẤT: Đẩy toàn bộ footer xuống đáy thẻ */
+}
+
+.btn-detail {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+    text-align: center;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 4px;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    background-color: white;
+    transition: all 0.2s;
+}
+
+    .btn-detail:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+/* ---- MOBILE RESPONSIVE ---- */
+@media (max-width: 768px) {
+    .list-product-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 cột trên điện thoại */
+        gap: 10px;
+        padding: 0 10px 30px;
+    }
+
+    .page-title {
+        font-size: 20px;
+    }
+
+    .product-content {
+        padding: 10px;
+    }
+
+    .product-footer {
+        padding: 0 10px 10px;
+    }
+}
+
+/* ---- THANH LỌC NÂNG CAO (PRICE & SORT) ---- */
+.filter-controls-row {
+    max-width: 1320px;
+    margin: 20px auto;
+    padding: 10px 15px;
+    background-color: #f7f7f7; /* Nền xám nhẹ cho dễ phân biệt */
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.filter-form {
+    display: flex;
+    gap: 25px;
+    align-items: flex-end; /* Căn chỉnh các input xuống dưới cùng */
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 150px; /* Độ rộng tiêu chuẩn */
+}
+
+/* Nhóm lọc giá */
+.price-filter {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+    .price-filter span {
+        color: #999;
+    }
+
+.btn-filter-apply {
+    background-color: var(--primary-color); /* Màu đỏ Fahasa */
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+    .btn-filter-apply:hover {
+        background-color: var(--primary-hover);
+    }

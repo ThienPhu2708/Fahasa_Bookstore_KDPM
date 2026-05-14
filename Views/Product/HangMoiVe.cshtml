@@ -1,0 +1,293 @@
+@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham>
+@{
+    ViewData["Title"] = "Hàng Mới Về";
+}
+
+<style>
+    .new-hero {
+        background: linear-gradient(135deg, #1e3c72 0%, #2F80ED 100%);
+        color: #fff;
+        padding: 60px 20px 50px;
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+    .new-hero::before {
+        content: "";
+        position: absolute;
+        top: -60px; left: -60px;
+        width: 240px; height: 240px;
+        background: rgba(255,255,255,0.07);
+        border-radius: 50%;
+    }
+    .new-hero::after {
+        content: "";
+        position: absolute;
+        bottom: -80px; right: -40px;
+        width: 300px; height: 300px;
+        background: rgba(255,255,255,0.06);
+        border-radius: 50%;
+    }
+    .new-hero h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .new-hero p { font-size: 1.1rem; opacity: 0.92; }
+    .new-hero .icon-star { font-size: 2.2rem; margin-right: 8px; vertical-align: middle; }
+
+    .new-sort-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto 30px;
+        padding: 0 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .new-sort-bar .result-count { font-size: 0.95rem; color: #666; }
+    .new-sort-bar .sort-group { display: flex; align-items: center; gap: 10px; }
+    .new-sort-bar select {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 7px 12px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        background: #fff;
+        outline: none;
+    }
+    .new-sort-bar select:focus { border-color: #2F80ED; }
+
+    .new-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px 60px;
+    }
+
+    .new-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        border: 1px solid #eee;
+        transition: transform 0.25s, box-shadow 0.25s;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    .new-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 28px rgba(47,128,237,0.15);
+        border-color: #d0e4fd;
+    }
+
+    .new-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #2F80ED;
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 20px;
+        z-index: 2;
+        box-shadow: 0 2px 6px rgba(47,128,237,0.35);
+        letter-spacing: 0.3px;
+    }
+
+    .new-img-wrapper {
+        width: 100%;
+        padding-top: 100%;
+        position: relative;
+        background: #f7f8fc;
+    }
+    .new-img-wrapper img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .new-body {
+        padding: 14px 16px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .new-name {
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #222;
+        margin-bottom: 5px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.4;
+    }
+    .new-meta { font-size: 0.8rem; color: #999; margin-bottom: 8px; }
+
+    .new-rating { font-size: 0.8rem; color: #f39c12; margin-bottom: 8px; }
+
+    .new-price-block { margin-top: auto; }
+    .new-price {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #C92127;
+    }
+    .new-price-sale {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+    .new-price-discounted {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #C92127;
+    }
+    .new-price-original {
+        font-size: 0.8rem;
+        color: #bbb;
+        text-decoration: line-through;
+    }
+    .new-discount-tag {
+        font-size: 0.72rem;
+        background: #fff0f0;
+        color: #C92127;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 700;
+        border: 1px solid #ffd0d0;
+    }
+
+    .new-footer { padding: 0 16px 14px; }
+    .btn-detail-new {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background: #C92127;
+        color: #fff;
+        padding: 9px 0;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+    .btn-detail-new:hover { background: #a81a20; color: #fff; }
+
+    .empty-new {
+        text-align: center;
+        padding: 80px 20px;
+        color: #999;
+    }
+    .empty-new .empty-icon { font-size: 4rem; display: block; margin-bottom: 16px; }
+    .empty-new h3 { font-size: 1.4rem; color: #555; }
+</style>
+
+<div class="new-hero">
+    <h1><span class="icon-star">🆕</span> Hàng Mới Về</h1>
+    <p>Những sản phẩm mới nhất vừa cập bến – Khám phá ngay!</p>
+</div>
+
+<div class="new-sort-bar">
+    <span class="result-count">Tìm thấy <strong>@Model.Count()</strong> sản phẩm mới về</span>
+    <div class="sort-group">
+        <label style="font-size:0.9rem; color:#555;">Sắp xếp:</label>
+        <form method="get" asp-action="HangMoiVe">
+            <select name="sortBy" onchange="this.form.submit()">
+                <option value="" selected="@(string.IsNullOrEmpty(ViewBag.CurrentSortBy?.ToString()))">Mới nhất</option>
+                <option value="price_asc" selected="@("price_asc" == ViewBag.CurrentSortBy?.ToString())">Giá (Thấp → Cao)</option>
+                <option value="price_desc" selected="@("price_desc" == ViewBag.CurrentSortBy?.ToString())">Giá (Cao → Thấp)</option>
+                <option value="date_desc" selected="@("date_desc" == ViewBag.CurrentSortBy?.ToString())">Ngày đăng mới nhất</option>
+            </select>
+        </form>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-new">
+        <span class="empty-icon">📦</span>
+        <h3>Chưa có hàng mới về</h3>
+        <p>Vui lòng quay lại sau, chúng tôi sẽ cập nhật sớm!</p>
+    </div>
+}
+else
+{
+    <div class="new-grid">
+        @foreach (var item in Model)
+        {
+            var coGiam = item.PhanTramGiam.HasValue && item.PhanTramGiam > 0;
+            var giaGiam = coGiam ? item.GiaBan * (1 - item.PhanTramGiam!.Value / 100) : item.GiaBan;
+
+            <div class="new-card">
+                <span class="new-badge">✨ Mới về</span>
+
+                <div class="new-img-wrapper">
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
+                        @if (!string.IsNullOrEmpty(item.HinhAnh))
+                        {
+                            <img src="~/images/product-images/@item.HinhAnh" alt="@item.TenSanPham" loading="lazy" />
+                        }
+                        else
+                        {
+                            <img src="~/images/product-images/default_product_img.jpg" alt="No Image" loading="lazy" />
+                        }
+                    </a>
+                </div>
+
+                <div class="new-body">
+                    <div class="new-name">
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" style="color:inherit;text-decoration:none;">
+                            @item.TenSanPham
+                        </a>
+                    </div>
+                    <div class="new-meta">
+                        @if (item.LoaiSanPhamId == 2 && item.ChiTietSach != null)
+                        {
+                            @(item.ChiTietSach.TacGia?.TenTacGia ?? "")
+                        }
+                        else if (item.LoaiSanPhamId == 1 && item.ChiTietVpp != null)
+                        {
+                            @(item.ChiTietVpp.ThuongHieu?.TenThuongHieu ?? "")
+                        }
+                    </div>
+                    <div class="new-rating">
+                        ★★★★★ (@((item.DanhGia ?? 0).ToString("0.0")))
+                    </div>
+                    <div class="new-price-block">
+                        @if (coGiam)
+                        {
+                            <div class="new-price-sale">
+                                <span class="new-price-discounted">@giaGiam.ToString("N0") ₫</span>
+                                <span class="new-price-original">@item.GiaBan.ToString("N0") ₫</span>
+                                <span class="new-discount-tag">-@item.PhanTramGiam!.Value.ToString("0")%</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="new-price">@item.GiaBan.ToString("N0") ₫</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="new-footer">
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="btn-detail-new">
+                        Xem chi tiết
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}

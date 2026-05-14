@@ -1,0 +1,42 @@
+﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.ThuongHieu>
+
+@{
+    ViewData["Title"] = "Quản lý Thương hiệu";
+}
+
+<h1>Quản lý Thương hiệu</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Tạo mới</a>
+</p>
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>
+                Mã Thương hiệu
+            </th>
+            <th>
+                Tên Thương hiệu
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaThuongHieu)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenThuongHieu)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" style="color:#dc3545;">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

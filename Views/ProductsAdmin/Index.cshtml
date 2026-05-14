@@ -1,0 +1,236 @@
+﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham>
+
+@{
+    ViewData["Title"] = "Quản lý Sản phẩm";
+}
+
+
+
+<style>
+    .admin-container {
+        padding: 20px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .page-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+    .btn-primary {
+        background: #0d6efd;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background: #0b5ed7;
+        }
+
+    .btn-secondary {
+        border: 1px solid #ccc;
+        background: #fff;
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .filter-card {
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .filter-form {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .filter-search {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 0 10px;
+    }
+
+        .filter-search input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+    .filter-icon {
+        color: #999;
+        margin-right: 6px;
+    }
+
+    .filter-select {
+        min-width: 180px;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+    }
+
+    .table-wrapper {
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-table th {
+            background: #f3f4f6;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .admin-table tr:hover {
+            background: #fafafa;
+        }
+
+    .product-img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .text-bold {
+        font-weight: 600;
+    }
+
+    .text-price {
+        color: #0d6efd;
+        font-weight: 600;
+    }
+
+    .badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        background: #f1f3f5;
+        font-size: 13px;
+    }
+
+</style>
+
+
+
+
+
+
+<div class="admin-container">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <h2>Danh sách sản phẩm</h2>
+        <a asp-action="Create" class="btn-primary">
+           + Thêm mới
+        </a>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-card">
+        <form asp-action="Index" method="get" class="filter-form">
+
+            <div class="filter-search">
+                <span class="filter-icon">🔍</span>
+                <input type="text"
+                       name="searchString"
+                       value="@ViewBag.CurrentSearch"
+                       placeholder="Tìm kiếm theo tên sản phẩm..." />
+            </div>
+
+            <select name="type" class="filter-select">
+                <option value="">-- Tất cả loại --</option>
+                <option value="Sách" selected="@(ViewBag.CurrentType == "Sách")">Sách</option>
+                <option value="Văn phòng phẩm" selected="@(ViewBag.CurrentType == "Văn phòng phẩm")">Văn phòng phẩm</option>
+            </select>
+
+            <button type="submit" class="btn-primary">
+                Lọc
+            </button>
+
+            <a asp-action="Index" class="btn-secondary" title="Xóa lọc">
+                ↻
+            </a>
+
+        </form>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Hình ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá bán</th>
+                    <th>Loại</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@(string.IsNullOrEmpty(item.HinhAnh)
+                                ? "/images/product-images/default_product_img.jpg"
+                                : $"/images/product-images/{item.HinhAnh}")"
+                                 class="product-img" />
+                        </td>
+
+                        <td class="text-bold">@item.TenSanPham</td>
+
+                        <td class="text-price">
+                            @item.GiaBan.ToString("N0") ₫
+                        </td>
+
+                        <td>
+                            <span class="badge">
+                                @(item.LoaiSanPham?.TenLoaiSp ?? "N/A")
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="action-buttons">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-outline-primary">Sửa</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn-outline-info">Chi tiết</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn-outline-danger">Xóa</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

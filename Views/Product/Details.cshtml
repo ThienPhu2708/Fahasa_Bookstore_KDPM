@@ -1,0 +1,394 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham
+@{
+    ViewData["Title"] = Model.TenSanPham;
+
+    var hinhAnhPath = string.IsNullOrEmpty(Model.HinhAnh)
+        ? "/images/product-images/default_product_img.jpg"
+        : $"/images/product-images/{Model.HinhAnh}";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="msgAlert" style="position: fixed; top: 100px; right: 20px; z-index: 9999; background: #d4edda; color: #155724; padding: 15px 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 5px solid #28a745; animation: slideIn 0.5s ease;">
+        <span style="font-size: 18px; margin-right: 10px;">✅</span>
+        <strong>@TempData["SuccessMessage"]</strong>
+    </div>
+
+    <script>
+        setTimeout(function() {
+            var msg = document.getElementById('msgAlert');
+            if(msg) msg.style.display = 'none';
+        }, 3000); // Tự tắt sau 3 giây
+    </script>
+}
+
+<div class="breadcrumb-nav">
+    <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+    <span>/</span>
+    <a asp-controller="Product" asp-action="Index">Sản phẩm</a>
+    <span>/</span>
+    <span class="current">@Model.TenSanPham</span>
+</div>
+
+<div class="product-detail-wrapper">
+    <div class="gallery-section">
+        <div class="main-image-container">
+            <img src="@hinhAnhPath" alt="@Model.TenSanPham" class="main-image" asp-append-version="true" />
+        </div>
+    </div>
+
+    <div class="info-section">
+       <div style="display: flex">
+            <h1 class="product-title">
+                @Model.TenSanPham
+            </h1>
+
+            <button type="button"
+                    class="btn-wishlist-detail @(ViewBag.IsWishlisted ? "active" : "")"
+                    onclick="toggleWishlistDetail(this, @Model.Id)"
+                    title="@(ViewBag.IsWishlisted ? "Bỏ yêu thích" : "Thêm vào yêu thích")">
+                <i class="heart-icon">♥</i>
+            </button>
+       </div>
+
+        <div class="product-meta-row">
+            <div class="rating-box">
+                <span class="stars">★★★★★</span>
+                <span class="rating-text">(@((Model.DanhGia ?? 0).ToString("0.0")))</span>
+            </div>
+            <span class="divider">|</span>
+            <div class="sold-count">Đã bán: <b>@(Model.SoLuongDaBan ?? 0)</b></div>
+        </div>
+
+        <div class="price-box">
+            @if (Model.PhanTramGiam.HasValue && Model.PhanTramGiam > 0)
+            {
+                var giaGiam = Model.GiaBan * (1 - Model.PhanTramGiam.Value / 100);
+                <span class="current-price" style="color:#ff416c;">@giaGiam.ToString("N0") ₫</span>
+                <span style="font-size:0.9rem; color:#aaa; text-decoration:line-through; margin-left:8px;">@Model.GiaBan.ToString("N0") ₫</span>
+                <span style="background:#ff416c; color:#fff; font-size:0.75rem; font-weight:bold; padding:2px 8px; border-radius:4px; margin-left:8px;">-@Model.PhanTramGiam.Value.ToString("0")%</span>
+            }
+            else
+            {
+                <span class="current-price">@Model.GiaBan.ToString("N0") ₫</span>
+            }
+        </div>
+
+        <div class="specs-box">
+            <h3 class="specs-title">Thông tin chi tiết</h3>
+            <div class="specs-grid">
+                @if (Model.LoaiSanPhamId == 2 && Model.ChiTietSach != null)
+                {
+                    // Dành cho SÁCH
+                    var cts = Model.ChiTietSach;
+                    <div class="spec-row"><span class="spec-label">Tác giả</span><span class="spec-val">@(cts.TacGia?.TenTacGia ?? "N/A")</span></div>
+                    <div class="spec-row"><span class="spec-label">Nhà xuất bản</span><span class="spec-val">@(cts.NhaXuatBan?.TenNxb ?? "N/A")</span></div>
+                    <div class="spec-row"><span class="spec-label">Thể loại</span><span class="spec-val">@(cts.TheLoai?.TenTheLoai ?? "N/A")</span></div>
+                    <div class="spec-row"><span class="spec-label">Số trang</span><span class="spec-val">@cts.SoTrang</span></div>
+                    <div class="spec-row"><span class="spec-label">Loại bìa</span><span class="spec-val">@cts.LoaiBia</span></div>
+                }
+                else if (Model.LoaiSanPhamId == 1 && Model.ChiTietVpp != null)
+                {
+                    // Dành cho VĂN PHÒNG PHẨM
+                    var ctv = Model.ChiTietVpp;
+                    <div class="spec-row"><span class="spec-label">Thương hiệu</span><span class="spec-val">@(ctv.ThuongHieu?.TenThuongHieu ?? "N/A")</span></div>
+                    <div class="spec-row"><span class="spec-label">Nhà sản xuất</span><span class="spec-val">@(ctv.NhaSanXuat?.TenNsx ?? "N/A")</span></div>
+                    <div class="spec-row"><span class="spec-label">Loại VPP</span><span class="spec-val">@(ctv.IdloaiVppNavigation?.TenLoaiVpp ?? "N/A")</span></div>
+
+                    var mauSac = string.Join(", ", ctv.MauSacs.Select(m => m.TenMauSac));
+                    if (!string.IsNullOrEmpty(mauSac))
+                    {
+                        <div class="spec-row"><span class="spec-label">Màu sắc</span><span class="spec-val">@mauSac</span></div>
+                    }
+                    var chatLieu = string.Join(", ", ctv.ChatLieus.Select(c => c.TenChatLieu));
+                    if (!string.IsNullOrEmpty(chatLieu))
+                    {
+                        <div class="spec-row"><span class="spec-label">Chất liệu</span><span class="spec-val">@chatLieu</span></div>
+                    }
+                }
+
+                <div class="spec-row"><span class="spec-label">Mã hàng</span><span class="spec-val">#@Model.Id</span></div>
+            </div>
+        </div>
+
+        <form asp-controller="Cart" asp-action="AddToCart" method="post" class="purchase-form">
+            <input type="hidden" name="sanPhamId" value="@Model.Id" />
+
+            <div class="quantity-control">
+                <span class="qty-label">Số lượng:</span>
+                <div class="qty-input-group">
+                    <button type="button" class="qty-btn" onclick="updateQty(-1)">-</button>
+                    <input type="number" id="qtyInput" name="quantity" value="1" min="1" max="99" class="qty-input">
+                    <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="submit" class="btn-add-cart">
+                    <span class="icon">🛒</span> Thêm vào giỏ hàng
+                </button>
+
+                <button type="submit" class="btn-buy-now">
+                    Mua ngay
+                </button>
+            </div>
+
+            <h1 class="product-title">
+                @* <button type="button"
+                        class="btn-wishlist-detail @(ViewBag.IsWishlisted ? "active" : "")"
+                        onclick="toggleWishlistDetail(this, @Model.Id)"
+                        title="@(ViewBag.IsWishlisted ? "Bỏ yêu thích" : "Thêm vào yêu thích")">
+                    <i class="heart-icon">♥</i>
+                </button> *@
+            </h1>
+        </form>
+
+        <div class="policy-box">
+            <div class="policy-item">
+                <img src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/ico_return.png" width="25">
+                <span>Đổi trả trong 30 ngày</span>
+            </div>
+            <div class="policy-item">
+                <img src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/ico_truck.png" width="25">
+                <span>Freeship toàn quốc</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="description-section">
+    <h3 class="section-heading">Mô tả sản phẩm</h3>
+    <div class="description-content">
+        @Html.Raw(Model.MoTa?.Replace("\n", "<br>"))
+    </div>
+</div>
+
+@if (ViewBag.RelatedProducts != null)
+{
+    var relatedList = ViewBag.RelatedProducts as List<CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham>;
+    if (relatedList != null && relatedList.Any())
+    {
+        <div class="related-section">
+            <div class="page-header" style="margin-top: 50px;">
+                <h2 class="page-title" style="font-size: 22px;">Có thể bạn sẽ thích</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <div class="list-product-container">
+                @foreach (var item in relatedList)
+                {
+                    <div class="product-card">
+                        <div class="product-img-wrapper">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
+                                @if (!string.IsNullOrEmpty(item.HinhAnh))
+                                {
+                                    <img class="product-img" src="~/images/product-images/@item.HinhAnh" alt="@item.TenSanPham" loading="lazy" />
+                                }
+                                else
+                                {
+                                    <img class="product-img" src="~/images/product-images/default_product_img.jpg" alt="No Image" loading="lazy" />
+                                }
+                            </a>
+                        </div>
+
+                        <div class="product-content">
+                            <h3 class="product-name">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">@item.TenSanPham</a>
+                            </h3>
+
+                            <div class="product-rating">
+                                <span class="stars">★★★★★</span>
+                            </div>
+
+                            <div class="price-row">
+                                @if (item.PhanTramGiam.HasValue && item.PhanTramGiam > 0)
+                                {
+                                    var giaGiamRel = item.GiaBan * (1 - item.PhanTramGiam.Value / 100);
+                                    <span class="price" style="color:#ff416c;">@giaGiamRel.ToString("N0") ₫</span>
+                                    <span style="font-size:0.78rem; color:#aaa; text-decoration:line-through; margin-left:4px;">@item.GiaBan.ToString("N0") ₫</span>
+                                }
+                                else
+                                {
+                                    <span class="price">@item.GiaBan.ToString("N0") ₫</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="product-footer">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="btn-detail">
+                                Xem chi tiết
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}
+
+<div class="review-section" style="margin-top: 50px; background: #fff; padding: 30px; border-radius: 8px;">
+
+
+    <h3 class="section-heading">Đánh giá sản phẩm (@(Model.DanhGias?.Count ?? 0))</h3>
+    @{
+        // 1. TÍNH TOÁN CÁC CHỈ SỐ
+        var totalReviews = Model.DanhGias?.Count() ?? 0;
+        var averageRating = (Model.DanhGias?.Any() == true ? Model.DanhGias.Average(r => r.Sao) : 0);
+
+        // Nhóm và đếm số lượng đánh giá cho từng mức sao (1 đến 5)
+        var ratingCounts = Model.DanhGias?
+        .GroupBy(r => r.Sao)
+        .ToDictionary(g => g.Key, g => g.Count()) ?? new Dictionary<byte, int>();
+
+        // Hàm hỗ trợ lấy số lượng theo sao
+        int GetStarCount(int star) => ratingCounts.ContainsKey((byte)star) ? ratingCounts[(byte)star] : 0;
+
+        // Hàm hỗ trợ tính phần trăm
+        string GetStarPercent(int star) => totalReviews > 0 ?
+        ((double)GetStarCount(star) / totalReviews * 100).ToString("0") + "%" : "0%";
+    }
+
+    <div class="rating-summary-grid">
+        <div class="summary-average-box">
+            <span class="average-score">@(averageRating.ToString("0.0"))</span>
+            <span class="stars-large">
+                @for (int i = 0; i < (int)Math.Round(averageRating); i++)
+                {
+                    <span>★</span>
+                }
+                @for (int i = 0; i < (5 - (int)Math.Round(averageRating)); i++)
+                {
+                    <span class="empty-star">★</span>
+                }
+            </span>
+            <span class="total-reviews-text">(@totalReviews đánh giá)</span>
+        </div>
+
+        <div class="star-breakdown-bars">
+            @for (int i = 5; i >= 1; i--)
+            {
+                var count = GetStarCount(i);
+                var percent = GetStarPercent(i);
+
+                <div class="star-bar-row">
+                    <span class="star-label">@i</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: @percent;"></div>
+                    </div>
+                    <span class="star-count">@count</span>
+                </div>
+            }
+        </div>
+    </div>
+    @if (Context.Session.GetString("UserId") != null)
+    {
+    }
+    else
+    {
+    }
+
+    <div class="review-list" style="margin-top: 20px;">
+        @if (Model.DanhGias != null && Model.DanhGias.Any())
+        {
+        }
+        else
+        {
+            <p style="color: #777; font-style: italic; text-align: center;">Chưa có đánh giá nào.</p>
+        }
+    </div>
+    @if (Context.Session.GetString("UserId") != null)
+    {
+        <form asp-action="AddComment" asp-controller="Product" method="post" style="margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
+            <input type="hidden" name="sanPhamId" value="@Model.Id" />
+
+            <div style="margin-bottom: 15px;">
+                <label>Đánh giá của bạn:</label>
+                <select name="soSao" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc; margin-left: 10px;">
+                    <option value="5">⭐⭐⭐⭐⭐ (Tuyệt vời)</option>
+                    <option value="4">⭐⭐⭐⭐ (Tốt)</option>
+                    <option value="3">⭐⭐⭐ (Bình thường)</option>
+                    <option value="2">⭐⭐ (Tệ)</option>
+                    <option value="1">⭐ (Rất tệ)</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <textarea name="noiDung" rows="3" placeholder="Chia sẻ cảm nhận về sản phẩm..." required
+                      style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+            </div>
+
+            <button type="submit" style="background: #C92127; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                Gửi đánh giá
+            </button>
+        </form>
+    }
+    else
+    {
+        <div style="background: #f9f9f9; padding: 15px; text-align: center; border-radius: 4px;">
+            Vui lòng <a asp-controller="Account" asp-action="Login" style="color: #C92127; font-weight: bold;">Đăng nhập</a> để viết đánh giá.
+        </div>
+    }
+
+    <div class="review-list" style="margin-top: 20px;">
+        @if (Model.DanhGias != null && Model.DanhGias.Any())
+        {
+            foreach (var review in Model.DanhGias.OrderByDescending(r => r.NgayTao))
+            {
+                <div class="review-item" style="margin-bottom: 20px; border-bottom: 1px dashed #eee; padding-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <div>
+                            <strong style="color: #333;">@(review.Account?.TenNguoiDung ?? "Người dùng")</strong>
+                            <span style="color: #ffc107; margin-left: 10px;">
+                                @for (int i = 0; i < review.Sao; i++)
+                                {
+                                    <span>★</span>
+                                }
+                            </span>
+                        </div>
+                        <span style="color: #999; font-size: 13px;">@review.NgayTao.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                    <p style="margin: 0; color: #555; line-height: 1.5;">@review.NoiDung</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p style="color: #777; font-style: italic; text-align: center;">Chưa có đánh giá nào.</p>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function updateQty(change) {
+            var input = document.getElementById('qtyInput');
+            var currentVal = parseInt(input.value);
+
+            if (isNaN(currentVal)) currentVal = 1;
+
+            var newVal = currentVal + change;
+
+            if (newVal >= 1 && newVal <= 99) {
+                input.value = newVal;
+            }
+        }
+
+        function toggleWishlistDetail(btn, productId) {
+            btn.classList.toggle('active');
+
+            fetch('/Wishlist/ToggleWishlist', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `sanPhamId=${productId}`
+            })
+            .then(res => {
+                if (res.status === 401) { 
+                    alert("Vui lòng đăng nhập để lưu yêu thích!");
+                    btn.classList.remove('active'); 
+                    window.location.href = '/Account/Login';
+                }
+            })
+            .catch(err => console.error(err));
+        }
+    </script>
+}

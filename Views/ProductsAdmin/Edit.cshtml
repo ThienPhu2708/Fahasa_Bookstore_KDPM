@@ -1,0 +1,132 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Models.ProductAdminViewModel
+
+@{
+    ViewData["Title"] = "Sửa Sản phẩm";
+}
+
+<h1>Sửa Sản phẩm: @Model.TenSanPham</h1>
+<hr />
+
+<div class="admin-form-container">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="LoaiSanPhamId" />
+        <input type="hidden" asp-for="HinhAnh" /> <h4>1. Thông tin chung</h4>
+        <div class="form-group">
+            <label asp-for="TenSanPham"></label>
+            <input asp-for="TenSanPham" />
+            <span asp-validation-for="TenSanPham" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="GiaBan"></label>
+            <input asp-for="GiaBan" type="number" />
+            <span asp-validation-for="GiaBan" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhanTramGiam"></label>
+            <input asp-for="PhanTramGiam" type="number" min="0" max="100" step="1" placeholder="Để trống nếu không giảm giá" />
+            <small class="text-muted">Nhập % giảm (0–100). Để trống nếu không áp dụng.</small>
+            <span asp-validation-for="PhanTramGiam" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="form-check" style="display:flex; align-items:center; gap:10px; margin: 8px 0;">
+                <input asp-for="HangMoiVe" type="checkbox" class="form-check-input" style="width:18px;height:18px;" />
+                <label asp-for="HangMoiVe" class="form-check-label" style="margin-bottom:0; font-weight:600;">Đánh dấu là Hàng mới về</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MoTa"></label>
+            <textarea asp-for="MoTa" rows="4"></textarea>
+            <span asp-validation-for="MoTa" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>Hình ảnh hiện tại</label><br />
+            <img src="@(string.IsNullOrEmpty(Model.HinhAnh) ? "/images/product-images/default_product_img.jpg" : $"/images/product-images/{Model.HinhAnh}")"
+                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 4px;" />
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageFile">Tải lên ảnh mới (để thay thế)</label>
+            <input asp-for="ImageFile" type="file" accept="image/*" />
+            <span asp-validation-for="ImageFile" class="text-danger"></span>
+        </div>
+
+        <hr style="margin: 20px 0;" />
+
+        <div id="sach-fields" style="display: @(Model.LoaiSanPhamId == 2 ? "block" : "none");">
+            <h4>2. Chi tiết Sách</h4>
+            <div class="form-group">
+                <label asp-for="TacGiaId"></label>
+                <select asp-for="TacGiaId" asp-items="Model.TacGias" class="form-control">
+                    <option value="">-- Chọn Tác giả --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="TheLoaiId"></label>
+                <select asp-for="TheLoaiId" asp-items="Model.TheLoaiSaches" class="form-control">
+                    <option value="">-- Chọn Thể loại --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NhaXuatBanId"></label>
+                <select asp-for="NhaXuatBanId" asp-items="Model.NhaXuatBans" class="form-control">
+                    <option value="">-- Chọn NXB --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoTrang"></label>
+                <input asp-for="SoTrang" type="number" />
+            </div>
+            <div class="form-group">
+                <label asp-for="LoaiBia"></label>
+                <input asp-for="LoaiBia" />
+            </div>
+        </div>
+
+        <div id="vpp-fields" style="display: @(Model.LoaiSanPhamId == 1 ? "block" : "none");">
+            <h4>2. Chi tiết Văn phòng phẩm</h4>
+            <div class="form-group">
+                <label asp-for="IdLoaiVpp"></label>
+                <select asp-for="IdLoaiVpp" asp-items="Model.LoaiVpphams" class="form-control">
+                    <option value="">-- Chọn Loại VPP --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ThuongHieuId"></label>
+                <select asp-for="ThuongHieuId" asp-items="Model.ThuongHieus" class="form-control">
+                    <option value="">-- Chọn Thương hiệu --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NhaSanXuatId"></label>
+                <select asp-for="NhaSanXuatId" asp-items="Model.NhaSanXuats" class="form-control">
+                    <option value="">-- Chọn Nhà sản xuất --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedMauSacIds">Màu sắc (Giữ Ctrl để chọn nhiều)</label>
+                <select asp-for="SelectedMauSacIds" asp-items="Model.AllMauSacs" class="form-control" multiple="multiple" style="height: 150px;">
+                </select>
+                <span asp-validation-for="SelectedMauSacIds" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SelectedChatLieuIds">Chất liệu (Giữ Ctrl để chọn nhiều)</label>
+                <select asp-for="SelectedChatLieuIds" asp-items="Model.AllChatLieus" class="form-control" multiple="multiple" style="height: 150px;">
+                </select>
+                <span asp-validation-for="SelectedChatLieuIds" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="admin-actions">
+            <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại Danh sách</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

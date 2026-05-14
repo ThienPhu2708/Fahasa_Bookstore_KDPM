@@ -1,0 +1,128 @@
+﻿/* ---- order-history.css ---- */
+
+.order-history-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.order-history-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Kiểu cho mỗi thẻ hóa đơn */
+.order-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow: hidden; 
+}
+
+/* Phần header của thẻ */
+.order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+    .order-card-header h5 {
+        margin: 0;
+        font-size: 1.2em;
+    }
+
+    .order-card-header .status-badge {
+        padding: 5px 10px;
+        border-radius: 4px;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+/* Màu cho các trạng thái */
+.status-pending {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.status-shipped {
+    background-color: #007bff;
+}
+
+.status-completed {
+    background-color: #28a745;
+}
+
+.status-cancelled {
+    background-color: #dc3545;
+}
+
+/* Phần body của thẻ */
+.order-card-body {
+    padding: 20px;
+    line-height: 1.6;
+}
+
+    .order-card-body p {
+        margin: 0 0 10px;
+        font-size: 16px;
+    }
+
+    .order-card-body strong {
+        color: #333;
+        min-width: 150px;
+        display: inline-block;
+    }
+
+/* Phần chi tiết (sản phẩm) */
+.order-details-title {
+    font-weight: 600;
+    margin-top: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+    .order-item:last-child {
+        border-bottom: none;
+    }
+
+    .order-item img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid #eee;
+    }
+
+.order-item-info {
+    flex-grow: 1;
+}
+
+    .order-item-info strong {
+        font-size: 15px;
+        min-width: auto;
+    }
+
+.order-item-price {
+    font-weight: 600;
+    color: #555;
+    text-align: right;
+}
+
+    .order-item-price small {
+        display: block;
+        color: #C92127;
+        font-weight: bold;
+    }

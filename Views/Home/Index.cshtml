@@ -1,0 +1,107 @@
+﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham>
+@{
+    ViewData["Title"] = "Trang chủ Modern";
+}
+
+<div class="modern-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-glass-card">
+        <span class="hero-tag">#NewCollection2025</span>
+        <h1>Khơi nguồn tri thức <br> Đánh thức đam mê</h1>
+        <p>Hàng ngàn đầu sách và văn phòng phẩm độc đáo đang chờ bạn.</p>
+        <div class="hero-btns">
+            <a asp-controller="Product" asp-action="Index" class="btn-primary-glow">Mua ngay</a>
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="2" class="btn-outline-light">Xem sách mới</a>
+        </div>
+    </div>
+</div>
+
+<div class="category-strip-container">
+    <div class="category-strip">
+        <a href="/Product?categoryId=2" class="cat-circle">
+            <div class="cat-img"><img src="https://cdn-icons-png.flaticon.com/512/3330/3330314.png" alt="Sách"></div>
+            <span>Sách</span>
+        </a>
+        <a href="/Product?categoryId=1" class="cat-circle">
+            <div class="cat-img"><img src="https://cdn-icons-png.flaticon.com/512/3209/3209265.png" alt="VPP"></div>
+            <span>Văn phòng phẩm</span>
+        </a>
+        <a href="#" class="cat-circle">
+            <div class="cat-img"><img src="https://cdn-icons-png.flaticon.com/512/1164/1164620.png" alt="Manga"></div>
+            <span>Manga</span>
+        </a>
+        <a href="#" class="cat-circle">
+            <div class="cat-img"><img src="https://cdn-icons-png.flaticon.com/512/2965/2965335.png" alt="Bút"></div>
+            <span>Bút viết</span>
+        </a>
+        <a href="#" class="cat-circle">
+            <div class="cat-img"><img src="https://cdn-icons-png.flaticon.com/512/3145/3145765.png" alt="Quà tặng"></div>
+            <span>Quà tặng</span>
+        </a>
+    </div>
+</div>
+
+<div class="section-container">
+    <h2 class="modern-heading">Khám phá nổi bật</h2>
+    <div class="bento-grid">
+        <div class="bento-item item-large" style="background-image: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1000&auto=format&fit=crop');">
+            <div class="bento-content">
+                <h3>Văn học kinh điển</h3>
+                <button>Khám phá</button>
+            </div>
+        </div>
+        <div class="bento-item item-tall" style="background-image: url('https://images.unsplash.com/photo-1586075010923-2dd4570fb338?q=80&w=600&auto=format&fit=crop');">
+            <div class="bento-content">
+                <h3>Dụng cụ vẽ</h3>
+                <button>Xem thêm</button>
+            </div>
+        </div>
+        <div class="bento-item item-medium" style="background-color: #ffecd2; background-image: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+            <div class="bento-content dark-text">
+                <h3>Flash Sale</h3>
+                <p>Giảm 50% hôm nay</p>
+            </div>
+            <img src="https://cdn-icons-png.flaticon.com/512/3600/3600466.png" class="bento-icon" alt="Sale">
+        </div>
+        <div class="bento-item item-medium" style="background-color: #8BC6EC; background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);">
+            <div class="bento-content dark-text">
+                <h3>Back to School</h3>
+                <p>Combo tiết kiệm</p>
+            </div>
+            <img src="https://cdn-icons-png.flaticon.com/512/2602/2602414.png" class="bento-icon" alt="School">
+        </div>
+    </div>
+</div>
+
+<div class="section-container">
+    <div class="header-flex">
+        <h2 class="modern-heading">Sản phẩm mới nhất</h2>
+        <a asp-controller="Product" asp-action="Index" class="link-arrow">Xem tất cả <span>&rarr;</span></a>
+    </div>
+
+    <div class="minimal-grid">
+        @foreach (var item in Model)
+        {
+            <div class="min-card">
+                <div class="min-img-box">
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
+                        <img src="@(string.IsNullOrEmpty(item.HinhAnh) ? "/images/product-images/default_product_img.jpg" : $"/images/product-images/{item.HinhAnh}")" alt="@item.TenSanPham" />
+                    </a>
+                    <button class="btn-quick-add" title="Thêm vào giỏ">+</button>
+                </div>
+                <div class="min-info">
+                    <div class="min-cat">@(item.LoaiSanPhamId == 2 ? "Sách" : "VPP")</div>
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="min-name">@item.TenSanPham</a>
+                    <div class="min-price">@item.GiaBan.ToString("N0") ₫</div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="marquee-section">
+    <div class="marquee-content">
+        <span>Fahasa Store &bull; Chính hãng 100% &bull; Giao hàng hỏa tốc &bull; Đổi trả 30 ngày &bull; Hỗ trợ 24/7 &bull;</span>
+        <span>Fahasa Store &bull; Chính hãng 100% &bull; Giao hàng hỏa tốc &bull; Đổi trả 30 ngày &bull; Hỗ trợ 24/7 &bull;</span>
+    </div>
+</div>

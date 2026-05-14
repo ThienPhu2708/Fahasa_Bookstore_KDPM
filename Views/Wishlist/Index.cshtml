@@ -1,0 +1,96 @@
+﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham>
+@{
+    ViewData["Title"] = "Sản phẩm yêu thích";
+}
+
+<div class="container py-5">
+    <div class="page-header text-start mb-4" style="text-align: left; margin: 0;">
+        <h2 class="page-title" style="font-size: 24px; border-bottom: 2px solid #C92127; display: inline-block; padding-bottom: 10px;">
+            ❤️ Sản phẩm yêu thích (@Model.Count())
+        </h2>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-light text-center" style="background-color: #f9f9f9; padding: 40px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/4076/4076432.png" width="80" style="opacity: 0.5; margin-bottom: 20px;">
+            <p style="color: #777;">Bạn chưa lưu sản phẩm nào vào danh sách yêu thích.</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary" style="background-color: #C92127; border: none;">
+                Tiếp tục mua sắm
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="list-product-container">
+            @foreach (var item in Model)
+            {
+                <div class="product-card" id="wishlist-item-@item.Id">
+                    <div class="product-img-wrapper">
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
+                            @if (!string.IsNullOrEmpty(item.HinhAnh))
+                            {
+                                <img class="product-img" src="~/images/product-images/@item.HinhAnh" alt="@item.TenSanPham" />
+                            }
+                            else
+                            {
+                                <img class="product-img" src="~/images/product-images/default_product_img.jpg" alt="No Image" />
+                            }
+                        </a>
+
+                        <button type="button" class="btn-wishlist active"
+                                onclick="removeFromWishlist(this, @item.Id)"
+                                title="Bỏ thích">
+                            <i class="heart-icon">♥</i>
+                        </button>
+                    </div>
+
+                    <div class="product-content">
+                        <h3 class="product-name">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">@item.TenSanPham</a>
+                        </h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price">@item.GiaBan.ToString("N0") ₫</span>
+                        </div>
+                    </div>
+
+                    <div class="product-footer">
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="btn-detail">
+                            Xem chi tiết
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function removeFromWishlist(btn, productId) {
+            if(!confirm('Bạn có chắc muốn xóa sản phẩm này khỏi danh sách yêu thích?')) return;
+
+            // Gọi API xóa
+            fetch('/Wishlist/ToggleWishlist', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `sanPhamId=${productId}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.isWishlisted === false) {
+                    // Xóa hiệu ứng trên giao diện ngay lập tức
+                    const card = document.getElementById(`wishlist-item-${productId}`);
+                    if(card) {
+                        card.style.opacity = '0';
+                        setTimeout(() => card.remove(), 300); // Đợi 0.3s cho mờ dần rồi xóa
+                    }
+                }
+            })
+            .catch(err => console.error(err));
+        }
+    </script>
+}

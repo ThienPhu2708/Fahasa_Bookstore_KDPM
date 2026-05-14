@@ -1,0 +1,72 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham
+
+@{
+    ViewData["Title"] = "Chi tiết Sản phẩm";
+}
+
+<h1>Chi tiết: @Model.TenSanPham</h1>
+
+<div class="admin-details-container">
+    <dl class="admin-details-dl">
+        <dt>ID</dt>
+        <dd>@Model.Id</dd>
+
+        <dt>Tên Sản Phẩm</dt>
+        <dd>@Model.TenSanPham</dd>
+
+        <dt>Giá Bán</dt>
+        <dd>@Model.GiaBan.ToString("N0") ₫</dd>
+
+        <dt>Loại</dt>
+        <dd>@Model.LoaiSanPham.TenLoaiSp</dd>
+
+        <dt>Hình Ảnh</dt>
+        <dd>
+            <img src="@(string.IsNullOrEmpty(Model.HinhAnh) ? "/images/product-images/default_product_img.jpg" : $"/images/product-images/{Model.HinhAnh}")"
+                 style="width: 200px; height: 200px; object-fit: cover; border-radius: 4px;" />
+        </dd>
+
+        <dt>Mô Tả</dt>
+        <dd>@Html.Raw(Model.MoTa?.Replace("\n", "<br />"))</dd>
+    </dl>
+
+    <hr />
+    <h4>Thông tin Chi tiết (@Model.LoaiSanPham.TenLoaiSp)</h4>
+    <dl class="admin-details-dl">
+        @if (Model.LoaiSanPhamId == 2 && Model.ChiTietSach != null)
+        {
+            var ct = Model.ChiTietSach;
+            <dt>Tác Giả</dt>
+            <dd>@(ct.TacGia?.TenTacGia ?? "N/A")</dd>
+
+            <dt>Thể Loại</dt>
+            <dd>@(ct.TheLoai?.TenTheLoai ?? "N/A")</dd>
+
+            <dt>Nhà Xuất Bản</dt>
+            <dd>@(ct.NhaXuatBan?.TenNxb ?? "N/A")</dd>
+
+            <dt>Số Trang</dt>
+            <dd>@(ct.SoTrang?.ToString() ?? "N/A")</dd>
+
+            <dt>Loại Bìa</dt>
+            <dd>@(ct.LoaiBia ?? "N/A")</dd>
+        }
+        else if (Model.LoaiSanPhamId == 1 && Model.ChiTietVpp != null)
+        {
+            var ct = Model.ChiTietVpp;
+            <dt>Loại VPP</dt>
+            <dd>@(ct.IdloaiVppNavigation?.TenLoaiVpp ?? "N/A")</dd>
+
+            <dt>Thương Hiệu</dt>
+            <dd>@(ct.ThuongHieu?.TenThuongHieu ?? "N/A")</dd>
+
+            <dt>Nhà Sản Xuất</dt>
+            <dd>@(ct.NhaSanXuat?.TenNsx ?? "N/A")</dd>
+        }
+    </dl>
+
+    <div class="admin-actions">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Sửa</a>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại Danh sách</a>
+    </div>
+</div>

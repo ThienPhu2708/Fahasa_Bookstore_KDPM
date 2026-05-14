@@ -1,0 +1,30 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham
+
+@{
+    ViewData["Title"] = "Xóa Sản phẩm";
+}
+
+<h1>Xóa Sản phẩm</h1>
+<h3>Bạn có chắc muốn xóa sản phẩm này?</h3>
+<p style="color: #dc3545;">LƯU Ý: Nếu sản phẩm đã có trong hóa đơn, việc xóa có thể thất bại.</p>
+
+<div class="admin-details-container">
+    <dl class="admin-details-dl">
+        <dt>ID</dt>
+        <dd>@Model.Id</dd>
+
+        <dt>Tên</dt>
+        <dd>@Model.TenSanPham</dd>
+
+        <dt>Loại</dt>
+        <dd>@Model.LoaiSanPham.TenLoaiSp</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <div class="admin-actions">
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại Danh sách</a>
+        </div>
+    </form>
+</div>

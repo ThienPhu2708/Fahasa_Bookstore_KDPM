@@ -1,0 +1,20 @@
+﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.TheLoaiSach>
+
+<div class="sub-menu">
+    <a class="sub-menu__item"
+       asp-controller="Product"
+       asp-action="Index"
+       asp-route-categoryId="2"
+       asp-route-subCategoryId="">Tất cả Sách</a>
+
+    @foreach (var theLoai in Model)
+    {
+        <a class="sub-menu__item"
+           asp-controller="Product"
+           asp-action="Index"
+           asp-route-categoryId="2"
+           asp-route-subCategoryId="@theLoai.Id">
+            @theLoai.TenTheLoai
+        </a>
+    }
+</div>

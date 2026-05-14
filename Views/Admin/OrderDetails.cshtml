@@ -1,0 +1,66 @@
+﻿@model CNPM_LIBRARY_MANAGEMENT.Data.Models.HoaDon
+@{
+    ViewData["Title"] = "Chi tiết Đơn hàng #" + Model.Id;
+}
+
+<h1>Chi tiết Đơn hàng #@Model.Id</h1>
+
+<div class="admin-details-container" style="max-width: 900px;">
+    <h4>Thông tin Khách hàng & Giao hàng</h4>
+    <dl class="admin-details-dl">
+        <dt>Khách hàng:</dt>
+        <dd>@(Model.Account?.TenNguoiDung ?? "N/A") (ID: @Model.AccountId)</dd>
+
+        <dt>Người nhận:</dt>
+        <dd>@Model.HoTenNguoiNhan</dd>
+
+        <dt>Địa chỉ giao:</dt>
+        <dd>@Model.DiaChiGiaoHang</dd>
+
+        <dt>Số điện thoại:</dt>
+        <dd>@Model.SoDienThoai</dd>
+    </dl>
+
+    <hr />
+
+    <h4>Thông tin Đơn hàng</h4>
+    <dl class="admin-details-dl">
+        <dt>Trạng thái:</dt>
+        <dd>@Model.TrangThai</dd>
+
+        <dt>Ngày đặt:</dt>
+        <dd>@Model.NgayDatHang.ToString("dd/MM/yyyy HH:mm")</dd>
+
+        <dt>Tổng tiền:</dt>
+        <dd style="color: #C92127; font-weight: bold; font-size: 1.2em;">@Model.TongTien.ToString("N0") ₫</dd>
+    </dl>
+
+    <hr />
+
+    <h4>Các sản phẩm trong đơn</h4>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ChiTietHoaDons)
+            {
+                <tr>
+                    <td>@(item.SanPham?.TenSanPham ?? "[Sản phẩm đã bị xóa]")</td>
+                    <td>@item.DonGia.ToString("N0") ₫</td>
+                    <td>@item.SoLuong</td>
+                    <td style="font-weight:bold;">@((item.DonGia * item.SoLuong).ToString("N0")) ₫</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="admin-actions">
+        <a asp-action="Index" class="btn btn-secondary">Quay lại Tổng quan</a>
+    </div>
+</div>

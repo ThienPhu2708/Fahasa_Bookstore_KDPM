@@ -1,0 +1,42 @@
+﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.MauSac>
+
+@{
+    ViewData["Title"] = "Quản lý Màu Sắc";
+}
+
+<h1>Quản lý Màu Sắc</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Tạo mới</a>
+</p>
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>
+                Mã Màu
+            </th>
+            <th>
+                Tên Màu Sắc
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaMauSac)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenMauSac)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" style="color:#dc3545;">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
