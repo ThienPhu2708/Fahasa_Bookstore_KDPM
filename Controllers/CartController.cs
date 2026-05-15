@@ -173,6 +173,49 @@ namespace CNPM_LIBRARY_MANAGEMENT.Controllers
             await SyncCartToDbAsync(sessionCart);
         }
 
+        // === API: THÊM VÀO GIỎ HÀNG (dùng cho Postman / kiểm thử API) ===
+        // POST /Cart/ApiAddToCart
+        // Body (JSON): { "sanPhamId": 1, "quantity": 2 }
+        [HttpPost]
+        public async Task<IActionResult> ApiAddToCart([FromBody] AddToCartRequest request)
+        {
+            if (request == null || request.SanPhamId <= 0)
+                return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ." });
+
+            var cart = HttpContext.Session.Get<List<CartItemViewModel>>("Cart") ?? new List<CartItemViewModel>();
+            var cartItem = cart.FirstOrDefault(x => x.SanPhamId == request.SanPhamId);
+
+            if (cartItem != null)
+            {
+                cartItem.SoLuong += request.Quantity;
+            }
+            else
+            {
+                var sanPham = _context.SanPhams.Find(request.SanPhamId);
+                if (sanPham == null)
+                    return Ok(new { success = false, message = "Sản phẩm không tồn tại." });
+
+                var donGia = (sanPham.PhanTramGiam.HasValue && sanPham.PhanTramGiam > 0)
+                    ? Math.Round(sanPham.GiaBan * (1 - sanPham.PhanTramGiam.Value / 100m), 0)
+                    : sanPham.GiaBan;
+
+                cart.Add(new CartItemViewModel
+                {
+                    SanPhamId = sanPham.Id,
+                    TenSanPham = sanPham.TenSanPham,
+                    DonGia = donGia,
+                    SoLuong = request.Quantity,
+                    HinhAnh = sanPham.HinhAnh
+                });
+            }
+
+            HttpContext.Session.Set("Cart", cart);
+            await SyncCartToDbAsync(cart);
+
+            int cartCount = cart.Sum(c => c.SoLuong);
+            return Ok(new { success = true, message = "Đã thêm sản phẩm vào giỏ hàng.", cartCount });
+        }
+
         private List<CartItemViewModel> GetCart()
         {
             var sessionData = _httpContextAccessor.HttpContext?.Session.GetString(CartSessionKey);

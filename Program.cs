@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using CNPM_LIBRARY_MANAGEMENT.Data.Models;
+using CNPM_LIBRARY_MANAGEMENT.Data;
 
 namespace CNPM_LIBRARY_MANAGEMENT
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +60,12 @@ namespace CNPM_LIBRARY_MANAGEMENT
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            // Tự động tạo bảng và seed dữ liệu mẫu khi chạy lần đầu
+            using (var scope = app.Services.CreateScope())
+            {
+                await SeedData.InitializeAsync(scope.ServiceProvider);
+            }
 
             app.Run();
         }

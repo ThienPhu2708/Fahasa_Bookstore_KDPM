@@ -386,5 +386,28 @@ namespace CNPM_LIBRARY_MANAGEMENT.Controllers
         {
             return _context.Accounts.Any(e => e.Id == id);
         }
+
+        // === API: ĐĂNG NHẬP (dùng cho Postman / kiểm thử API) ===
+        // POST /Account/ApiLogin
+        // Body (JSON): { "gmail": "user@example.com", "password": "123456" }
+        [HttpPost]
+        public async Task<IActionResult> ApiLogin([FromBody] LoginViewModel viewModel)
+        {
+            if (viewModel == null)
+                return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ." });
+
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Gmail == viewModel.Gmail);
+
+            if (account == null || !PasswordHelper.VerifyPasswordHash(viewModel.Password, account.PasswordHash, account.PasswordSalt))
+            {
+                return Ok(new { success = false, message = "Email hoặc mật khẩu không đúng." });
+            }
+
+            HttpContext.Session.SetString("UserId", account.Id.ToString());
+            HttpContext.Session.SetString("Username", account.TenNguoiDung ?? account.Gmail);
+            HttpContext.Session.SetString("UserRole", account.Role);
+
+            return Ok(new { success = true, message = "Đăng nhập thành công.", userId = account.Id, role = account.Role });
+        }
     }
 }
