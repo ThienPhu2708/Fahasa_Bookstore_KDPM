@@ -26,3 +26,35 @@ Báo cáo này tóm tắt các thay đổi đã thực hiện để khắc phụ
 **Các Thay Đổi Đã Thực Hiện:**
 - Chạy lệnh SQL (thông qua SQLCMD) để **xóa hoàn toàn (Drop) Database `CNPM_LIBRARY_MANAGEMENT`** hiện tại chứa các rác dữ liệu cũ.
 - **Mục đích:** Để ở lần khởi chạy tiếp theo (`dotnet run`), Entity Framework thông qua hàm `MigrateAsync` sẽ tạo lại một Database hoàn toàn sạch từ đầu. Bộ đếm Id của tất cả các bảng sẽ được khởi tạo lại về 1, đảm bảo các liên kết khóa ngoại (Foreign Key) trong Seed Data khớp nhau hoàn hảo.
+
+## 3. Khắc phục lỗi Ảnh Sản Phẩm Không Hiển Thị Trên Web
+
+**Thời gian:** 30/05/2026
+
+**Vấn Đề:**
+- Khi chạy ứng dụng web, các thẻ `<img>` của sản phẩm hiển thị dưới dạng ảnh vỡ (broken image) — chỉ thấy tên thay thế (alt text), không thấy hình.
+- **Nguyên nhân:** Các file ảnh trong thư mục `wwwroot/images/product-images/` được đặt tên theo định dạng UUID (ví dụ: `a95a98a5-..._ToiThayhoavangtrencoxanh.jpg`), trong khi `SeedData.cs` gọi đến các tên ngắn gọn (ví dụ: `hoa-vang.jpg`). Tên file không khớp nên trình duyệt không tìm thấy ảnh.
+
+**Các Thay Đổi Đã Thực Hiện:**
+
+*Bước 1 — Đổi tên 8 file ảnh trong `wwwroot/images/product-images/`:*
+
+| Tên file cũ (UUID) | Tên file mới (khớp SeedData) |
+|---|---|
+| `a95a98a5-..._ToiThayhoavangtrencoxanh.jpg` | `hoa-vang.jpg` |
+| `d6ed1937-..._DeMenPhieuLuuKy_ToHoai.jpg` | `de-men.jpg` |
+| `ed4df63d-..._DacNhanTam.jpg` | `dac-nhan-tam.jpg` |
+| `9aa9c566-..._NhaGiaKim.jpg` | `nha-gia-kim.jpg` |
+| `19141701-..._TuoiThoDuDoi_tap1.jpg` | `tuoi-tho.jpg` |
+| `95cabfcd-..._ButBi_ThienLong_Hop20.jpg` | `but-bi-tl027.jpg` |
+| `df554bab-..._HongHa_VoHS_200page.jpg` | `tap-hoc-sinh.jpg` |
+| `58fc4449-..._Thuoc_ThienLong_36cm.jpg` | `thuoc-ke.jpg` |
+
+*Bước 2 — Reset Database để SeedData chạy lại:*
+- Vì database cũ đã lưu tên ảnh UUID cũ, cần xóa toàn bộ database.
+- Chạy lệnh SQL qua SQLCMD để Drop database `CNPM_LIBRARY_MANAGEMENT`.
+- Khi chạy lại `dotnet run`, EF Core tự tạo lại database mới sạch và SeedData sẽ điền đúng tên ảnh.
+
+**Kết quả:**
+- Ứng dụng khởi động lại, database được tạo mới, 8 sản phẩm được seed với tên ảnh chính xác.
+- Ảnh sản phẩm hiển thị đầy đủ trên giao diện web.
