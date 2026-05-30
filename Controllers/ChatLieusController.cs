@@ -52,7 +52,7 @@ namespace CNPM_LIBRARY_MANAGEMENT.Controllers
         // POST: ChatLieus/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TenChatLieu")] ChatLieu chatLieu)
+        public async Task<IActionResult> Create([Bind("TenChatLieu")] ChatLieu chatLieu)
         {
             ModelState.Remove("MaChatLieu");
             if (ModelState.IsValid)

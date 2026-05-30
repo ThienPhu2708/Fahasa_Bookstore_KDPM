@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CNPM_LIBRARY_MANAGEMENT.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260513160607_AddDiscountAndNewArrival")]
-    partial class AddDiscountAndNewArrival
+    [Migration("20260526102533_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -258,6 +258,35 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                     b.ToTable("DanhGias");
                 });
 
+            modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.GioHangItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DonGia")
+                        .HasColumnType("decimal(18, 0)");
+
+                    b.Property<int>("SanPhamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SoLuong")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("SanPhamId");
+
+                    b.ToTable("GioHangItem", (string)null);
+                });
+
             modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.HoaDon", b =>
                 {
                     b.Property<int>("Id")
@@ -476,6 +505,9 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                     b.Property<decimal>("GiaBan")
                         .HasColumnType("decimal(18, 0)");
 
+                    b.Property<bool>("HangMoiVe")
+                        .HasColumnType("bit");
+
                     b.Property<string>("HinhAnh")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -499,6 +531,9 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("date")
                         .HasDefaultValueSql("(getdate())");
+
+                    b.Property<decimal?>("PhanTramGiam")
+                        .HasColumnType("decimal(5, 2)");
 
                     b.Property<int?>("SoLuongDaBan")
                         .ValueGeneratedOnAdd()
@@ -775,6 +810,25 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                     b.Navigation("SanPham");
                 });
 
+            modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.GioHangItem", b =>
+                {
+                    b.HasOne("CNPM_LIBRARY_MANAGEMENT.Data.Models.Account", "Account")
+                        .WithMany("GioHangItems")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham", "SanPham")
+                        .WithMany()
+                        .HasForeignKey("SanPhamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("SanPham");
+                });
+
             modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.HoaDon", b =>
                 {
                     b.HasOne("CNPM_LIBRARY_MANAGEMENT.Data.Models.Account", "Account")
@@ -848,6 +902,8 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
 
             modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.Account", b =>
                 {
+                    b.Navigation("GioHangItems");
+
                     b.Navigation("HoaDons");
                 });
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CNPM_LIBRARY_MANAGEMENT.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateDanhGiasTable : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -170,7 +170,8 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                     TrangThai = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, defaultValue: "Chờ xử lý"),
                     HoTenNguoiNhan = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     DiaChiGiaoHang = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    SoDienThoai = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
+                    SoDienThoai = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    GiamGia = table.Column<decimal>(type: "decimal(18,0)", nullable: false, defaultValueSql: "((0))")
                 },
                 constraints: table =>
                 {
@@ -197,7 +198,9 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                     DanhGia = table.Column<byte>(type: "tinyint", nullable: true),
                     SoLuongDaBan = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
                     NgayDang = table.Column<DateOnly>(type: "date", nullable: true, defaultValueSql: "(getdate())"),
-                    LoaiSanPhamID = table.Column<int>(type: "int", nullable: false)
+                    LoaiSanPhamID = table.Column<int>(type: "int", nullable: false),
+                    PhanTramGiam = table.Column<decimal>(type: "decimal(5,2)", nullable: true),
+                    HangMoiVe = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -316,8 +319,8 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SanPhamId = table.Column<int>(type: "int", nullable: false),
                     AccountId = table.Column<int>(type: "int", nullable: false),
-                    Sao = table.Column<int>(type: "int", nullable: false),
-                    NoiDung = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Sao = table.Column<byte>(type: "tinyint", nullable: false),
+                    NoiDung = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -331,6 +334,61 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_DanhGias_SanPham_SanPhamId",
+                        column: x => x.SanPhamId,
+                        principalTable: "SanPham",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GioHangItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    SanPhamId = table.Column<int>(type: "int", nullable: false),
+                    DonGia = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                    SoLuong = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GioHangItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GioHangItem_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GioHangItem_SanPham_SanPhamId",
+                        column: x => x.SanPhamId,
+                        principalTable: "SanPham",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "YeuThich",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    SanPhamId = table.Column<int>(type: "int", nullable: false),
+                    NgayThem = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_YeuThich", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_YeuThich_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_YeuThich_SanPham_SanPhamId",
                         column: x => x.SanPhamId,
                         principalTable: "SanPham",
                         principalColumn: "ID",
@@ -449,6 +507,16 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                 column: "SanPhamId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GioHangItem_AccountId",
+                table: "GioHangItem",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GioHangItem_SanPhamId",
+                table: "GioHangItem",
+                column: "SanPhamId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_HoaDon_AccountID",
                 table: "HoaDon",
                 column: "AccountID");
@@ -497,6 +565,16 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                 table: "ThuongHieu",
                 column: "TenThuongHieu",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_YeuThich_AccountId",
+                table: "YeuThich",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_YeuThich_SanPhamId",
+                table: "YeuThich",
+                column: "SanPhamId");
         }
 
         /// <inheritdoc />
@@ -512,10 +590,16 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                 name: "DanhGias");
 
             migrationBuilder.DropTable(
+                name: "GioHangItem");
+
+            migrationBuilder.DropTable(
                 name: "SanPhamVPP_ChatLieu");
 
             migrationBuilder.DropTable(
                 name: "SanPhamVPP_MauSac");
+
+            migrationBuilder.DropTable(
+                name: "YeuThich");
 
             migrationBuilder.DropTable(
                 name: "HoaDon");

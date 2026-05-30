@@ -42,8 +42,8 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
         {
             if (context.LoaiSanPhams.Any()) return;
             context.LoaiSanPhams.AddRange(
-                new LoaiSanPham { Id = 1, TenLoaiSp = "Sách" },
-                new LoaiSanPham { Id = 2, TenLoaiSp = "Văn phòng phẩm" }
+                new LoaiSanPham {  TenLoaiSp = "Sách" },
+                new LoaiSanPham {  TenLoaiSp = "Văn phòng phẩm" }
             );
         }
 
@@ -51,10 +51,10 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
         {
             if (context.TacGia.Any()) return;
             context.TacGia.AddRange(
-                new TacGium { Id = 1, TenTacGia = "Nguyễn Nhật Ánh" },
-                new TacGium { Id = 2, TenTacGia = "Tô Hoài" },
-                new TacGium { Id = 3, TenTacGia = "Dale Carnegie" },
-                new TacGium { Id = 4, TenTacGia = "Nam Quốc Chấn" }
+                new TacGium { TenTacGia = "Nguyễn Nhật Ánh" },
+                new TacGium { TenTacGia = "Tô Hoài" },
+                new TacGium { TenTacGia = "Dale Carnegie" },
+                new TacGium { TenTacGia = "Nam Quốc Chấn" }
             );
         }
 
@@ -62,10 +62,10 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
         {
             if (context.TheLoaiSaches.Any()) return;
             context.TheLoaiSaches.AddRange(
-                new TheLoaiSach { Id = 1, TenTheLoai = "Văn học" },
-                new TheLoaiSach { Id = 2, TenTheLoai = "Thiếu nhi" },
-                new TheLoaiSach { Id = 3, TenTheLoai = "Kỹ năng sống" },
-                new TheLoaiSach { Id = 4, TenTheLoai = "Kinh tế" }
+                new TheLoaiSach { TenTheLoai = "Văn học" },
+                new TheLoaiSach { TenTheLoai = "Thiếu nhi" },
+                new TheLoaiSach { TenTheLoai = "Kỹ năng sống" },
+                new TheLoaiSach { TenTheLoai = "Kinh tế" }
             );
         }
 
@@ -73,10 +73,10 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
         {
             if (context.NhaXuatBans.Any()) return;
             context.NhaXuatBans.AddRange(
-                new NhaXuatBan { Id = 1, TenNxb = "NXB Trẻ" },
-                new NhaXuatBan { Id = 2, TenNxb = "NXB Kim Đồng" },
-                new NhaXuatBan { Id = 3, TenNxb = "NXB Giáo Dục" },
-                new NhaXuatBan { Id = 4, TenNxb = "NXB Tổng hợp TP.HCM" }
+                new NhaXuatBan { TenNxb = "NXB Trẻ" },
+                new NhaXuatBan { TenNxb = "NXB Kim Đồng" },
+                new NhaXuatBan { TenNxb = "NXB Giáo Dục" },
+                new NhaXuatBan { TenNxb = "NXB Tổng hợp TP.HCM" }
             );
         }
 
@@ -84,9 +84,9 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
         {
             if (context.NhaSanXuats.Any()) return;
             context.NhaSanXuats.AddRange(
-                new NhaSanXuat { Id = 1, TenNsx = "Thiên Long" },
-                new NhaSanXuat { Id = 2, TenNsx = "Bến Nghé" },
-                new NhaSanXuat { Id = 3, TenNsx = "Deli" }
+                new NhaSanXuat { TenNsx = "Thiên Long" },
+                new NhaSanXuat { TenNsx = "Bến Nghé" },
+                new NhaSanXuat { TenNsx = "Deli" }
             );
         }
 
@@ -94,9 +94,9 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
         {
             if (context.ThuongHieus.Any()) return;
             context.ThuongHieus.AddRange(
-                new ThuongHieu { Id = 1, TenThuongHieu = "Thiên Long" },
-                new ThuongHieu { Id = 2, TenThuongHieu = "Staedtler" },
-                new ThuongHieu { Id = 3, TenThuongHieu = "Deli" }
+                new ThuongHieu { TenThuongHieu = "Thiên Long" },
+                new ThuongHieu { TenThuongHieu = "Staedtler" },
+                new ThuongHieu { TenThuongHieu = "Deli" }
             );
         }
 
@@ -104,9 +104,9 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
         {
             if (context.ChatLieus.Any()) return;
             context.ChatLieus.AddRange(
-                new ChatLieu { Id = 1, TenChatLieu = "Nhựa" },
-                new ChatLieu { Id = 2, TenChatLieu = "Kim loại" },
-                new ChatLieu { Id = 3, TenChatLieu = "Gỗ" }
+                new ChatLieu { TenChatLieu = "Nhựa" },
+                new ChatLieu { TenChatLieu = "Kim loại" },
+                new ChatLieu {  TenChatLieu = "Gỗ" }
             );
         }
 
@@ -114,10 +114,10 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
         {
             if (context.MauSacs.Any()) return;
             context.MauSacs.AddRange(
-                new MauSac { Id = 1, TenMauSac = "Đỏ" },
-                new MauSac { Id = 2, TenMauSac = "Xanh dương" },
-                new MauSac { Id = 3, TenMauSac = "Đen" },
-                new MauSac { Id = 4, TenMauSac = "Trắng" }
+                new MauSac { TenMauSac = "Đỏ" },
+                new MauSac { TenMauSac = "Xanh dương" },
+                new MauSac { TenMauSac = "Đen" },
+                new MauSac { TenMauSac = "Trắng" }
             );
         }
 
@@ -125,9 +125,9 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
         {
             if (context.LoaiVpphams.Any()) return;
             context.LoaiVpphams.AddRange(
-                new LoaiVppham { Id = 1, TenLoaiVpp = "Bút viết" },
-                new LoaiVppham { Id = 2, TenLoaiVpp = "Tập vở" },
-                new LoaiVppham { Id = 3, TenLoaiVpp = "Dụng cụ học tập" }
+                new LoaiVppham { TenLoaiVpp = "Bút viết" },
+                new LoaiVppham { TenLoaiVpp = "Tập vở" },
+                new LoaiVppham { TenLoaiVpp = "Dụng cụ học tập" }
             );
         }
 
@@ -140,7 +140,7 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
                 // Sách (LoaiSanPhamId = 1)
                 new SanPham
                 {
-                    Id = 1, TenSanPham = "Tôi thấy hoa vàng trên cỏ xanh",
+                    TenSanPham = "Tôi thấy hoa vàng trên cỏ xanh",
                     GiaBan = 85000, LoaiSanPhamId = 1, SoLuongDaBan = 120,
                     MoTa = "Tiểu thuyết của Nguyễn Nhật Ánh, câu chuyện về tuổi thơ đầy cảm xúc.",
                     HinhAnh = "hoa-vang.jpg", DanhGia = 5, NgayDang = DateOnly.FromDateTime(DateTime.Now),
@@ -148,7 +148,7 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
                 },
                 new SanPham
                 {
-                    Id = 2, TenSanPham = "Dế Mèn Phiêu Lưu Ký",
+                    TenSanPham = "Dế Mèn Phiêu Lưu Ký",
                     GiaBan = 65000, LoaiSanPhamId = 1, SoLuongDaBan = 200,
                     MoTa = "Tác phẩm kinh điển của nhà văn Tô Hoài dành cho thiếu nhi.",
                     HinhAnh = "de-men.jpg", DanhGia = 5, NgayDang = DateOnly.FromDateTime(DateTime.Now),
@@ -156,7 +156,7 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
                 },
                 new SanPham
                 {
-                    Id = 3, TenSanPham = "Đắc Nhân Tâm",
+                    TenSanPham = "Đắc Nhân Tâm",
                     GiaBan = 110000, LoaiSanPhamId = 1, SoLuongDaBan = 350,
                     MoTa = "Cuốn sách kỹ năng giao tiếp bán chạy nhất mọi thời đại.",
                     HinhAnh = "dac-nhan-tam.jpg", DanhGia = 5, NgayDang = DateOnly.FromDateTime(DateTime.Now),
@@ -164,7 +164,7 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
                 },
                 new SanPham
                 {
-                    Id = 4, TenSanPham = "Nhà Giả Kim",
+                    TenSanPham = "Nhà Giả Kim",
                     GiaBan = 79000, LoaiSanPhamId = 1, SoLuongDaBan = 180,
                     MoTa = "Tiểu thuyết của Paulo Coelho về hành trình theo đuổi ước mơ.",
                     HinhAnh = "nha-gia-kim.jpg", DanhGia = 4, NgayDang = DateOnly.FromDateTime(DateTime.Now),
@@ -172,7 +172,7 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
                 },
                 new SanPham
                 {
-                    Id = 5, TenSanPham = "Tuổi Thơ Dữ Dội",
+                    TenSanPham = "Tuổi Thơ Dữ Dội",
                     GiaBan = 72000, LoaiSanPhamId = 1, SoLuongDaBan = 95,
                     MoTa = "Tiểu thuyết của Phùng Quán về những thiếu niên anh hùng.",
                     HinhAnh = "tuoi-tho.jpg", DanhGia = 4, NgayDang = DateOnly.FromDateTime(DateTime.Now),
@@ -182,7 +182,7 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
                 // Văn phòng phẩm (LoaiSanPhamId = 2)
                 new SanPham
                 {
-                    Id = 6, TenSanPham = "Bút bi Thiên Long TL-027",
+                    TenSanPham = "Bút bi Thiên Long TL-027",
                     GiaBan = 5000, LoaiSanPhamId = 2, SoLuongDaBan = 500,
                     MoTa = "Bút bi cao cấp, mực đều, viết trơn tru.",
                     HinhAnh = "but-bi-tl027.jpg", DanhGia = 4, NgayDang = DateOnly.FromDateTime(DateTime.Now),
@@ -190,7 +190,7 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
                 },
                 new SanPham
                 {
-                    Id = 7, TenSanPham = "Tập học sinh 200 trang Bến Nghé",
+                    TenSanPham = "Tập học sinh 200 trang Bến Nghé",
                     GiaBan = 18000, LoaiSanPhamId = 2, SoLuongDaBan = 300,
                     MoTa = "Tập học sinh 200 trang, giấy trắng, kẻ ngang.",
                     HinhAnh = "tap-hoc-sinh.jpg", DanhGia = 4, NgayDang = DateOnly.FromDateTime(DateTime.Now),
@@ -198,7 +198,7 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
                 },
                 new SanPham
                 {
-                    Id = 8, TenSanPham = "Thước kẻ nhựa 30cm Deli",
+                    TenSanPham = "Thước kẻ nhựa 30cm Deli",
                     GiaBan = 8000, LoaiSanPhamId = 2, SoLuongDaBan = 150,
                     MoTa = "Thước kẻ nhựa trong suốt, độ chính xác cao.",
                     HinhAnh = "thuoc-ke.jpg", DanhGia = 3, NgayDang = DateOnly.FromDateTime(DateTime.Now),

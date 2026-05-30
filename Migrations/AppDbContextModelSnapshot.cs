@@ -86,35 +86,6 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.GioHangItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("DonGia")
-                        .HasColumnType("decimal(18,0)");
-
-                    b.Property<int>("SanPhamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SoLuong")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("SanPhamId");
-
-                    b.ToTable("GioHangItem");
-                });
-
             modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.ChatLieu", b =>
                 {
                     b.Property<int>("Id")
@@ -282,6 +253,35 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                     b.HasIndex("SanPhamId");
 
                     b.ToTable("DanhGias");
+                });
+
+            modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.GioHangItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DonGia")
+                        .HasColumnType("decimal(18, 0)");
+
+                    b.Property<int>("SanPhamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SoLuong")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("SanPhamId");
+
+                    b.ToTable("GioHangItem", (string)null);
                 });
 
             modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.HoaDon", b =>
@@ -502,6 +502,9 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                     b.Property<decimal>("GiaBan")
                         .HasColumnType("decimal(18, 0)");
 
+                    b.Property<bool>("HangMoiVe")
+                        .HasColumnType("bit");
+
                     b.Property<string>("HinhAnh")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -525,6 +528,9 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("date")
                         .HasDefaultValueSql("(getdate())");
+
+                    b.Property<decimal?>("PhanTramGiam")
+                        .HasColumnType("decimal(5, 2)");
 
                     b.Property<int?>("SoLuongDaBan")
                         .ValueGeneratedOnAdd()
@@ -696,27 +702,6 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                     b.ToTable("SanPhamVPP_MauSac", (string)null);
                 });
 
-            modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.GioHangItem", b =>
-                {
-                    b.HasOne("CNPM_LIBRARY_MANAGEMENT.Data.Models.Account", "Account")
-                        .WithMany("GioHangItems")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_GioHangItem_Accounts_AccountId");
-
-                    b.HasOne("CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham", "SanPham")
-                        .WithMany()
-                        .HasForeignKey("SanPhamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_GioHangItem_SanPham_SanPhamId");
-
-                    b.Navigation("Account");
-
-                    b.Navigation("SanPham");
-                });
-
             modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.ChiTietHoaDon", b =>
                 {
                     b.HasOne("CNPM_LIBRARY_MANAGEMENT.Data.Models.HoaDon", "HoaDon")
@@ -822,6 +807,25 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
                     b.Navigation("SanPham");
                 });
 
+            modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.GioHangItem", b =>
+                {
+                    b.HasOne("CNPM_LIBRARY_MANAGEMENT.Data.Models.Account", "Account")
+                        .WithMany("GioHangItems")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham", "SanPham")
+                        .WithMany()
+                        .HasForeignKey("SanPhamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("SanPham");
+                });
+
             modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.HoaDon", b =>
                 {
                     b.HasOne("CNPM_LIBRARY_MANAGEMENT.Data.Models.Account", "Account")
@@ -895,9 +899,9 @@ namespace CNPM_LIBRARY_MANAGEMENT.Migrations
 
             modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.Account", b =>
                 {
-                    b.Navigation("HoaDons");
-
                     b.Navigation("GioHangItems");
+
+                    b.Navigation("HoaDons");
                 });
 
             modelBuilder.Entity("CNPM_LIBRARY_MANAGEMENT.Data.Models.HoaDon", b =>
