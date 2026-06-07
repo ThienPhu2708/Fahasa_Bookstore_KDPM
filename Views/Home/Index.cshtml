@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham>
+@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham>
 @{
     ViewData["Title"] = "Trang chủ Modern";
 }
@@ -87,7 +87,10 @@
                     <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
                         <img src="@(string.IsNullOrEmpty(item.HinhAnh) ? "/images/product-images/default_product_img.jpg" : $"/images/product-images/{item.HinhAnh}")" alt="@item.TenSanPham" />
                     </a>
-                    <button class="btn-quick-add" title="Thêm vào giỏ">+</button>
+                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline ajax-add-to-cart">
+                        <input type="hidden" name="sanPhamId" value="@item.Id" />
+                        <button type="submit" class="btn-quick-add" title="Thêm vào giỏ">+</button>
+                    </form>
                 </div>
                 <div class="min-info">
                     <div class="min-cat">@(item.LoaiSanPhamId == 2 ? "Sách" : "VPP")</div>

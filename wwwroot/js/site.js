@@ -1,4 +1,4 @@
-﻿// Function để hiện Pop-up
+// Function để hiện Pop-up
 function openModal() {
     const modal = document.getElementById('promoModal');
     if (modal) {
@@ -41,4 +41,32 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!modalShown) {
         setTimeout(openModal, 2000);
     }
+
+    // Xử lý nút Thêm vào giỏ hàng bằng AJAX
+    const addCartForms = document.querySelectorAll('.ajax-add-to-cart');
+    addCartForms.forEach(form => {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const sanPhamId = formData.get('sanPhamId');
+            
+            try {
+                const response = await fetch('/Cart/ApiAddToCart', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sanPhamId: parseInt(sanPhamId), quantity: 1 })
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    alert("Đã thêm vào giỏ hàng thành công!");
+                } else {
+                    alert(result.message || "Có lỗi xảy ra!");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Không thể kết nối đến máy chủ.");
+            }
+        });
+    });
 });

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace CNPM_LIBRARY_MANAGEMENT.Models
 {
@@ -10,11 +10,12 @@ namespace CNPM_LIBRARY_MANAGEMENT.Models
 
         [Required(ErrorMessage = "Vui lòng nhập địa chỉ")]
         [Display(Name = "Địa chỉ giao hàng")]
+        [MinLength(5, ErrorMessage = "Địa chỉ quá ngắn hoặc không hợp lệ")]
         public string DiaChiGiaoHang { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
         [Display(Name = "Số điện thoại")]
-        [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Số điện thoại không hợp lệ (phải đủ 10 chữ số)")]
         public string SoDienThoai { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham>
+@model IEnumerable<CNPM_LIBRARY_MANAGEMENT.Data.Models.SanPham>
 @{
     ViewData["Title"] = "Danh sách Sản phẩm";
     int? categoryId = ViewBag.CurrentCategoryId;
@@ -90,7 +90,10 @@
                     }
                 </a>
                 
-                <button class="quick-add-btn" title="Thêm nhanh vào giỏ">+</button>
+                <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline ajax-add-to-cart">
+                    <input type="hidden" name="sanPhamId" value="@item.Id" />
+                    <button type="submit" class="quick-add-btn" title="Thêm nhanh vào giỏ">+</button>
+                </form>
             </div>
 
             <div class="product-content">

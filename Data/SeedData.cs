@@ -203,6 +203,14 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
                     MoTa = "Thước kẻ nhựa trong suốt, độ chính xác cao.",
                     HinhAnh = "thuoc-ke.jpg", DanhGia = 3, NgayDang = DateOnly.FromDateTime(DateTime.Now),
                     HangMoiVe = true, PhanTramGiam = 0
+                },
+                new SanPham
+                {
+                    TenSanPham = "Truyện tranh Doraemon",
+                    GiaBan = 20000, LoaiSanPhamId = 1, SoLuongDaBan = 50,
+                    MoTa = "Truyện tranh chú mèo máy Doraemon đến từ tương lai.",
+                    HinhAnh = "doraemon.jpg", DanhGia = 5, NgayDang = DateOnly.FromDateTime(DateTime.Now),
+                    HangMoiVe = true, PhanTramGiam = 10
                 }
             );
         }
@@ -246,6 +254,13 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
                     SanPhamId = 5, TheLoaiId = 1, TacGiaId = null,
                     NhaXuatBanId = 3, SoTrang = 456,
                     LoaiBia = "Bìa mềm", NgayPhatHanh = new DateOnly(2009, 9, 1),
+                    KichThuoc = "13 x 19 cm"
+                },
+                new ChiTietSach
+                {
+                    SanPhamId = 9, TheLoaiId = 2, TacGiaId = null,
+                    NhaXuatBanId = 2, SoTrang = 150,
+                    LoaiBia = "Bìa mềm", NgayPhatHanh = new DateOnly(2020, 1, 1),
                     KichThuoc = "13 x 19 cm"
                 }
             );
@@ -297,7 +312,7 @@ namespace CNPM_LIBRARY_MANAGEMENT.Data
                 },
                 new Account
                 {
-                    Gmail = "user@gmail.com",
+                    Gmail = "user1@gmail.com",
                     TenNguoiDung = "Nguyễn Văn A",
                     PasswordHash = userHash,
                     PasswordSalt = userSalt,
